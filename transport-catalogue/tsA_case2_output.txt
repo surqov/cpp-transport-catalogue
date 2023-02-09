@@ -1,0 +1,200 @@
+Bus YeXlNBi1xV6cLxsWpyTvAt: 75 stops on route, 38 unique stops, 1.33176e+06 route length
+Bus VBIzDos27: 72 stops on route, 70 unique stops, 1.29053e+06 route length
+Bus mvUWAjQJfLl50BYCSdfv0Jau: 97 stops on route, 93 unique stops, 1.72516e+06 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus gfjVvxZqG6: 19 stops on route, 10 unique stops, 353770 route length
+Bus Yjc4: 34 stops on route, 33 unique stops, 575081 route length
+Bus gfjVvxZqG6: 19 stops on route, 10 unique stops, 353770 route length
+Bus dDD: 63 stops on route, 32 unique stops, 1.18286e+06 route length
+Bus e: not found
+Bus dA: 3 stops on route, 2 unique stops, 36840.1 route length
+Bus xq tY: 68 stops on route, 67 unique stops, 1.12925e+06 route length
+Bus X0o: 89 stops on route, 83 unique stops, 1.62876e+06 route length
+Bus ibFEUvhRFBMIKqB72y6P: 77 stops on route, 72 unique stops, 1.52975e+06 route length
+Bus tEQvV9EpEOjmc5SMjwKSM: 71 stops on route, 36 unique stops, 1.25426e+06 route length
+Bus dDD: 63 stops on route, 32 unique stops, 1.18286e+06 route length
+Bus rIb1ZAYt2ivffZsz5Y: 27 stops on route, 24 unique stops, 397006 route length
+Bus 9LocZYNrbmWQFEaA: not found
+Bus sQxj8: 71 stops on route, 36 unique stops, 1.29658e+06 route length
+Bus sQxj8: 71 stops on route, 36 unique stops, 1.29658e+06 route length
+Bus G6zVoKpL6be36MxVxigpO9: 25 stops on route, 13 unique stops, 483817 route length
+Bus G6zVoKpL6be36MxVxigpO9: 25 stops on route, 13 unique stops, 483817 route length
+Bus Yo8a52g41CyY4aVh: 44 stops on route, 43 unique stops, 797754 route length
+Bus r4cARPj: 27 stops on route, 14 unique stops, 541713 route length
+Bus Dy 0jvJdultU8SFx3mYEgg: 37 stops on route, 19 unique stops, 806716 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus r4cARPj: 27 stops on route, 14 unique stops, 541713 route length
+Bus tr1r3U3: 45 stops on route, 23 unique stops, 617315 route length
+Bus v5LdEDri6GL5tTh7Gn: 85 stops on route, 41 unique stops, 1.63509e+06 route length
+Bus S56o241uet xefv2NVNZ: 27 stops on route, 14 unique stops, 458522 route length
+Bus WGMP5: 71 stops on route, 34 unique stops, 1.33482e+06 route length
+Bus m2IvykrFyx4tqPSdf: 69 stops on route, 35 unique stops, 1.08849e+06 route length
+Bus l2 v27: 13 stops on route, 12 unique stops, 166618 route length
+Bus Bn9dU8: 44 stops on route, 42 unique stops, 603653 route length
+Bus jKHzWLrP0f: 14 stops on route, 13 unique stops, 217837 route length
+Bus Mv6: 31 stops on route, 30 unique stops, 618751 route length
+Bus 2jpLpiHlwrgiL: 91 stops on route, 46 unique stops, 1.73546e+06 route length
+Bus 0scJePuqJ8uV56yQ: 70 stops on route, 69 unique stops, 1.32624e+06 route length
+Bus gIcQSG0c: 89 stops on route, 45 unique stops, 1.69591e+06 route length
+Bus Dy 0jvJdultU8SFx3mYEgg: 37 stops on route, 19 unique stops, 806716 route length
+Bus LLD317TPpUmqvaNPPvkz ia: 47 stops on route, 23 unique stops, 746437 route length
+Bus QJT4opJFlKAw: 93 stops on route, 90 unique stops, 1.68699e+06 route length
+Bus mvUWAjQJfLl50BYCSdfv0Jau: 97 stops on route, 93 unique stops, 1.72516e+06 route length
+Bus 7bWHnEr4Hj79F bfhE: 81 stops on route, 41 unique stops, 1.46669e+06 route length
+Bus l2 v27: 13 stops on route, 12 unique stops, 166618 route length
+Bus 0scJePuqJ8uV56yQ: 70 stops on route, 69 unique stops, 1.32624e+06 route length
+Bus euZ7oiRvYgy4C: 90 stops on route, 88 unique stops, 1.62214e+06 route length
+Bus AirgoGaD6 m: not found
+Bus rIb1ZAYt2ivffZsz5Y: 27 stops on route, 24 unique stops, 397006 route length
+Bus p2LwHUWUHg89bvlfjX: 53 stops on route, 27 unique stops, 988516 route length
+Bus RL2gQFVApGVFtjmDt3HZouSP: 76 stops on route, 74 unique stops, 1.27366e+06 route length
+Bus QJT4opJFlKAw: 93 stops on route, 90 unique stops, 1.68699e+06 route length
+Bus fE6NcKOa6z9o: not found
+Bus ci 65dW2of: 93 stops on route, 47 unique stops, 1.72095e+06 route length
+Bus 8Y4iuU7ZRHSUtUpXU: 9 stops on route, 5 unique stops, 135190 route length
+Bus CLmEM4Pqf6IvNTVIlX: 5 stops on route, 3 unique stops, 75631.6 route length
+Bus WGMP5: 71 stops on route, 34 unique stops, 1.33482e+06 route length
+Bus 1BXUTE: not found
+Bus qp77 RJpFOKj14XfS: not found
+Bus r4cARPj: 27 stops on route, 14 unique stops, 541713 route length
+Bus WGMP5: 71 stops on route, 34 unique stops, 1.33482e+06 route length
+Bus GrXQ: 42 stops on route, 40 unique stops, 763608 route length
+Bus fPSrIBOBqSdktR58C1Td: 11 stops on route, 6 unique stops, 161476 route length
+Bus nB QX NCAgiQ1haxhD: 91 stops on route, 46 unique stops, 1.52844e+06 route length
+Bus mvUWAjQJfLl50BYCSdfv0Jau: 97 stops on route, 93 unique stops, 1.72516e+06 route length
+Bus 5TfDEpr9lH9PP7E26fygmky9W: 27 stops on route, 14 unique stops, 555856 route length
+Bus jKHzWLrP0f: 14 stops on route, 13 unique stops, 217837 route length
+Bus GrXQ: 42 stops on route, 40 unique stops, 763608 route length
+Bus 3t30os4UnSYNdFQVfWkqhjKx: not found
+Bus m2IvykrFyx4tqPSdf: 69 stops on route, 35 unique stops, 1.08849e+06 route length
+Bus rL63MiCQ2tak8aR: 45 stops on route, 41 unique stops, 825539 route length
+Bus fK0Dt4UtvVL2ULZ: 53 stops on route, 51 unique stops, 1.02287e+06 route length
+Bus Yjc4: 34 stops on route, 33 unique stops, 575081 route length
+Bus kpYv1CI: 97 stops on route, 95 unique stops, 1.74236e+06 route length
+Bus ajsxwlXCv1xlqMUn3TZ3zpy: 96 stops on route, 93 unique stops, 1.5171e+06 route length
+Bus e1QSnumGjqq4jEr: 53 stops on route, 27 unique stops, 884313 route length
+Bus s8zSGq: 49 stops on route, 25 unique stops, 943223 route length
+Bus AnAB gQlMK: 73 stops on route, 37 unique stops, 1.36087e+06 route length
+Bus aVoQGeRB18zuvzSRyPLuiq6Yj: 63 stops on route, 60 unique stops, 1.06534e+06 route length
+Bus D 0mt7AZHgYvJr: 67 stops on route, 34 unique stops, 1.28165e+06 route length
+Bus ajsxwlXCv1xlqMUn3TZ3zpy: 96 stops on route, 93 unique stops, 1.5171e+06 route length
+Bus tr1r3U3: 45 stops on route, 23 unique stops, 617315 route length
+Bus Xc: 78 stops on route, 77 unique stops, 1.42412e+06 route length
+Bus Xc: 78 stops on route, 77 unique stops, 1.42412e+06 route length
+Bus T0TShtm03p: 51 stops on route, 26 unique stops, 806618 route length
+Bus CcU: 75 stops on route, 73 unique stops, 1.46789e+06 route length
+Bus ibFEUvhRFBMIKqB72y6P: 77 stops on route, 72 unique stops, 1.52975e+06 route length
+Bus ci 65dW2of: 93 stops on route, 47 unique stops, 1.72095e+06 route length
+Bus Xc: 78 stops on route, 77 unique stops, 1.42412e+06 route length
+Bus ibFEUvhRFBMIKqB72y6P: 77 stops on route, 72 unique stops, 1.52975e+06 route length
+Bus gOWEsXxQtWg: 95 stops on route, 93 unique stops, 1.80689e+06 route length
+Bus rL63MiCQ2tak8aR: 45 stops on route, 41 unique stops, 825539 route length
+Bus o5DP1txiegmgd6J2Uv6a: 54 stops on route, 53 unique stops, 1.05204e+06 route length
+Bus jKHzWLrP0f: 14 stops on route, 13 unique stops, 217837 route length
+Bus nB QX NCAgiQ1haxhD: 91 stops on route, 46 unique stops, 1.52844e+06 route length
+Bus dDD: 63 stops on route, 32 unique stops, 1.18286e+06 route length
+Bus eBd: not found
+Bus sQxj8: 71 stops on route, 36 unique stops, 1.29658e+06 route length
+Bus 8lPUmzr60 vJNZ9gfHvFe: 35 stops on route, 18 unique stops, 612348 route length
+Bus if: 81 stops on route, 41 unique stops, 1.47667e+06 route length
+Bus euZ7oiRvYgy4C: 90 stops on route, 88 unique stops, 1.62214e+06 route length
+Bus dA: 3 stops on route, 2 unique stops, 36840.1 route length
+Bus cRatdGGCjp05: 15 stops on route, 7 unique stops, 196482 route length
+Bus YeXlNBi1xV6cLxsWpyTvAt: 75 stops on route, 38 unique stops, 1.33176e+06 route length
+Bus l2 v27: 13 stops on route, 12 unique stops, 166618 route length
+Bus 0scJePuqJ8uV56yQ: 70 stops on route, 69 unique stops, 1.32624e+06 route length
+Bus 8Y4iuU7ZRHSUtUpXU: 9 stops on route, 5 unique stops, 135190 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus fh76KeSTKO: 49 stops on route, 25 unique stops, 923597 route length
+Bus EqFTjpw4pdpfV: 87 stops on route, 43 unique stops, 1.46844e+06 route length
+Bus v5LdEDri6GL5tTh7Gn: 85 stops on route, 41 unique stops, 1.63509e+06 route length
+Bus tEQvV9EpEOjmc5SMjwKSM: 71 stops on route, 36 unique stops, 1.25426e+06 route length
+Bus Dy 0jvJdultU8SFx3mYEgg: 37 stops on route, 19 unique stops, 806716 route length
+Bus CLmEM4Pqf6IvNTVIlX: 5 stops on route, 3 unique stops, 75631.6 route length
+Bus Xc: 78 stops on route, 77 unique stops, 1.42412e+06 route length
+Bus D9: 61 stops on route, 31 unique stops, 1.00622e+06 route length
+Bus ibFEUvhRFBMIKqB72y6P: 77 stops on route, 72 unique stops, 1.52975e+06 route length
+Bus gOWEsXxQtWg: 95 stops on route, 93 unique stops, 1.80689e+06 route length
+Bus S56o241uet xefv2NVNZ: 27 stops on route, 14 unique stops, 458522 route length
+Bus sZ: 56 stops on route, 54 unique stops, 956470 route length
+Bus sZ: 56 stops on route, 54 unique stops, 956470 route length
+Bus ctDf1ZimETY: not found
+Bus RL2gQFVApGVFtjmDt3HZouSP: 76 stops on route, 74 unique stops, 1.27366e+06 route length
+Bus 8Y4iuU7ZRHSUtUpXU: 9 stops on route, 5 unique stops, 135190 route length
+Bus CcU: 75 stops on route, 73 unique stops, 1.46789e+06 route length
+Bus czuWGYFIJWTx4p3MsOjtjEYL: 65 stops on route, 33 unique stops, 1.3147e+06 route length
+Bus Dy 0jvJdultU8SFx3mYEgg: 37 stops on route, 19 unique stops, 806716 route length
+Bus MAKvpAo1FBU: 85 stops on route, 43 unique stops, 1.61938e+06 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus ci 65dW2of: 93 stops on route, 47 unique stops, 1.72095e+06 route length
+Bus yhOpzDJc eBXNX0bD45LS: not found
+Bus e1QSnumGjqq4jEr: 53 stops on route, 27 unique stops, 884313 route length
+Bus S4F2xTPxE: 13 stops on route, 7 unique stops, 290927 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus zlPAc8lMj5qb: not found
+Bus fh76KeSTKO: 49 stops on route, 25 unique stops, 923597 route length
+Bus 0scJePuqJ8uV56yQ: 70 stops on route, 69 unique stops, 1.32624e+06 route length
+Bus ajsxwlXCv1xlqMUn3TZ3zpy: 96 stops on route, 93 unique stops, 1.5171e+06 route length
+Bus FXlYCg5pwW13iHaERqjw: 5 stops on route, 3 unique stops, 78744 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus 8Y4iuU7ZRHSUtUpXU: 9 stops on route, 5 unique stops, 135190 route length
+Bus 9ooSbxWxoCK4dwfM7VnrO: not found
+Bus euZ7oiRvYgy4C: 90 stops on route, 88 unique stops, 1.62214e+06 route length
+Bus 8: not found
+Bus GrXQ: 42 stops on route, 40 unique stops, 763608 route length
+Bus zq8 FYEeIX39u: 57 stops on route, 28 unique stops, 865644 route length
+Bus 0Imb00gIs44MynPt: not found
+Bus Dy 0jvJdultU8SFx3mYEgg: 37 stops on route, 19 unique stops, 806716 route length
+Bus 8Y4iuU7ZRHSUtUpXU: 9 stops on route, 5 unique stops, 135190 route length
+Bus tEQvV9EpEOjmc5SMjwKSM: 71 stops on route, 36 unique stops, 1.25426e+06 route length
+Bus Mv6: 31 stops on route, 30 unique stops, 618751 route length
+Bus gOWEsXxQtWg: 95 stops on route, 93 unique stops, 1.80689e+06 route length
+Bus AnAB gQlMK: 73 stops on route, 37 unique stops, 1.36087e+06 route length
+Bus mvUWAjQJfLl50BYCSdfv0Jau: 97 stops on route, 93 unique stops, 1.72516e+06 route length
+Bus RbvhDpB1JH9QAdi: 29 stops on route, 15 unique stops, 416680 route length
+Bus CLmEM4Pqf6IvNTVIlX: 5 stops on route, 3 unique stops, 75631.6 route length
+Bus r4cARPj: 27 stops on route, 14 unique stops, 541713 route length
+Bus GlHn: not found
+Bus f: not found
+Bus MAKvpAo1FBU: 85 stops on route, 43 unique stops, 1.61938e+06 route length
+Bus XLq9L3Duppr1M: 13 stops on route, 12 unique stops, 214601 route length
+Bus euZ7oiRvYgy4C: 90 stops on route, 88 unique stops, 1.62214e+06 route length
+Bus WN2iJzAV5a08K9fk1S: not found
+Bus Dz5uzG46uk7lPi6goKUZzksm: 95 stops on route, 90 unique stops, 1.76098e+06 route length
+Bus WnxqYavtQ82Lkn4O3qhGlt: 93 stops on route, 47 unique stops, 1.64163e+06 route length
+Bus 0scJePuqJ8uV56yQ: 70 stops on route, 69 unique stops, 1.32624e+06 route length
+Bus uDOm2MMTvfYKUzNpo98Z6qdiM: not found
+Bus khjCeGSZQQy: 90 stops on route, 87 unique stops, 1.65907e+06 route length
+Bus GrXQ: 42 stops on route, 40 unique stops, 763608 route length
+Bus WnxqYavtQ82Lkn4O3qhGlt: 93 stops on route, 47 unique stops, 1.64163e+06 route length
+Bus 4hhTgzitNTueN: 31 stops on route, 30 unique stops, 506959 route length
+Bus GrXQ: 42 stops on route, 40 unique stops, 763608 route length
+Bus Mv6: 31 stops on route, 30 unique stops, 618751 route length
+Bus GrXQ: 42 stops on route, 40 unique stops, 763608 route length
+Bus 4hhTgzitNTueN: 31 stops on route, 30 unique stops, 506959 route length
+Bus Yjc4: 34 stops on route, 33 unique stops, 575081 route length
+Bus AnAB gQlMK: 73 stops on route, 37 unique stops, 1.36087e+06 route length
+Bus PZO4NpeCmVe: not found
+Bus FXlYCg5pwW13iHaERqjw: 5 stops on route, 3 unique stops, 78744 route length
+Bus xq tY: 68 stops on route, 67 unique stops, 1.12925e+06 route length
+Bus h3Yp: 74 stops on route, 73 unique stops, 1.24765e+06 route length
+Bus CcU: 75 stops on route, 73 unique stops, 1.46789e+06 route length
+Bus XLq9L3Duppr1M: 13 stops on route, 12 unique stops, 214601 route length
+Bus euZ7oiRvYgy4C: 90 stops on route, 88 unique stops, 1.62214e+06 route length
+Bus X0o: 89 stops on route, 83 unique stops, 1.62876e+06 route length
+Bus gIcQSG0c: 89 stops on route, 45 unique stops, 1.69591e+06 route length
+Bus l2 v27: 13 stops on route, 12 unique stops, 166618 route length
+Bus 0irHLWWKKPu4Sgx: 21 stops on route, 11 unique stops, 385125 route length
+Bus QJT4opJFlKAw: 93 stops on route, 90 unique stops, 1.68699e+06 route length
+Bus EgQO: not found
+Bus WhpeYpYgYlwv: not found
+Bus X0o: 89 stops on route, 83 unique stops, 1.62876e+06 route length
+Bus fK0Dt4UtvVL2ULZ: 53 stops on route, 51 unique stops, 1.02287e+06 route length
+Bus HiJ: not found
+Bus 4R0TD7qRuCVyzRfkeOReF: not found
+Bus ibFEUvhRFBMIKqB72y6P: 77 stops on route, 72 unique stops, 1.52975e+06 route length
+Bus gOWEsXxQtWg: 95 stops on route, 93 unique stops, 1.80689e+06 route length
+Bus R5Gv8EJ1wv3Kem: 32 stops on route, 31 unique stops, 577098 route length
+Bus jKHzWLrP0f: 14 stops on route, 13 unique stops, 217837 route length
+Bus tUDvCLK83e652  FUYRgRXc: 75 stops on route, 37 unique stops, 1.45578e+06 route length
+Bus xra7KAt1Pp: 43 stops on route, 22 unique stops, 683536 route length
