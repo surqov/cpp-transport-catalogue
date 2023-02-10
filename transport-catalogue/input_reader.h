@@ -45,10 +45,11 @@ class reader {
       return result;
   }
 
+  std::vector<std::string> SplitIntoWords(const std::string&& input);
+  std::vector<Query*> ParseToQuery(std::vector<std::string>& query);
+  std::vector<Query*> SortByQueryType(std::vector<Query*>& query);
 
-std::vector<std::string> SplitIntoWords(const std::string& input);
-std::vector<Query*> ParseToQuery(std::vector<std::string>& query);
-std::vector<Query*> SortByQueryType(std::vector<Query*>& query);
+  reader() = default;
 }
 
 }
