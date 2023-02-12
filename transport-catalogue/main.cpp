@@ -10,7 +10,7 @@ int main() {
     {
         LOG_DURATION("Loaded queries for: "s);
         reader::reader<std::ifstream> queries(file);
-        std::cout << "ok";
+        std::cout << "";
     }
     return 0;
 }
