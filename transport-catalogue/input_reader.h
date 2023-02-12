@@ -56,7 +56,7 @@ Query ParseToQuery(std::vector<std::string>&& string_container) {
   return result;
 }
 
-void SortByQueryType(std::vector<Query>&& query_container) {
+void SortByQueryType(std::vector<Query>& query_container) {
   std::sort(query_container.begin(), query_container.end(), [](const Query& lhs, const Query& rhs) {
     return lhs.type == QueryType::NewStop && rhs.type == QueryType::NewBus;
   });
@@ -65,22 +65,26 @@ void SortByQueryType(std::vector<Query>&& query_container) {
 template <class InStream>
 class reader {
   private:
-    std::vector<Query> sorted_queries;
+    std::vector<Query> queries;
 
   public:
     reader() = default;
 
     reader (InStream& input) {
-      std::vector<std::vector<std::string>> temp_string_container;
+      std::vector<Query> temp_container;
       int num_of_lines;
-      input >> num_of_lines;
-      temp_string_container.reserve(num_of_lines);
       std::string line;
-      while (--num_of_lines != 0) {
+      std::getline(input, line);
+      num_of_lines = std::stoi(line);
+      temp_container.reserve(num_of_lines);
+      while (num_of_lines != 0) {
           std::getline(input, line);
-          temp_string_container.push_back(SplitIntoWords(std::move(line)));
+          std::cout << line << "\n";
+          Query temp_query = ParseToQuery(SplitIntoWords(std::move(line)));
+          queries.push_back(std::move(temp_query));
+          --num_of_lines;
       }
-      sorted_queries = SortByQueryType(std::move(ParseToQuery(std::move(temp_string_container))));
+      SortByQueryType(queries);
     }
 
     ~reader() = default;
