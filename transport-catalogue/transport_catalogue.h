@@ -1,3 +1,5 @@
+#pragma once
+
 #include "geo.h"
 
 #include <deque>
@@ -5,6 +7,7 @@
 #include <unordered_map>
 #include <string_view>
 #include <iomanip>
+#include <vector>
 
 const double ACCURACY = 1e-6;
 const char precision = 6;
@@ -18,6 +21,7 @@ struct Stop {
 
 struct Bus {
     std::string name;
+    std::vector<std::string> stops;
 };
 
 //функция хеширования до size_t для distances из долготы и широты домножением на единый множитель
