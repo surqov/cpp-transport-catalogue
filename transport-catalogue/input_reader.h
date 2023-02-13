@@ -79,11 +79,15 @@ class reader {
       temp_container.reserve(num_of_lines);
       while (num_of_lines != 0) {
           std::getline(input, line);
-          Query temp_query = ParseToQuery(SplitIntoWords(std::move(line)));
+          Query temp_query = ParseToQuery((SplitIntoWords(std::move(line))));
           queries.push_back(std::move(temp_query));
           --num_of_lines;
       }
       SortByQueryType(queries);
+    }
+
+    const std::vector<Query>& GetQueries() const {
+      return queries;
     }
 
     ~reader() = default;
