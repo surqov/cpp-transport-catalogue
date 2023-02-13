@@ -7,7 +7,11 @@
 
 int main() {
     std::ifstream file( "assert_files/tsA_case2_input.txt");
-    reader::reader<std::ifstream> queries(file);
-
+    {
+        LOG_DURATION("Loaded queries for"s);
+        reader::reader<std::ifstream> queries(file);
+        auto l_4 = queries.GetQueries();
+        std::cout << "";
+    }
     return 0;
 }
