@@ -45,11 +45,13 @@ class catalogue {
     
   public:
     catalogue();
-    void AddStop();
-    void FindStop() const;
-    void AddBus();
-    void FindBus() const;
-    void GetBusInfo() const;
+    void AddStop(const Stop& stop) {
+        stops.push_back(stop);
+    }
+    void FindStop(const Stop& stop) const; 
+    void AddBus(const Bus& bus);
+    void FindBus(const Bus& bus) const;
+    void GetBusInfo(const Bus& bus) const;
 };
 
 }

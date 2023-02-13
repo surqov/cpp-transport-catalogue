@@ -30,7 +30,7 @@ std::vector<std::string> SplitIntoWords(const std::string&& input) {
     size_t pos = 0;
     while (pos != value.npos) {
       pos = value.find_first_of(">,-");
-      result.push_back(value.substr(1, pos-2));
+      result.push_back(value.substr(1, pos - 2));
       value.erase(0, pos + 1);
     }
     return result;
@@ -68,8 +68,6 @@ class reader {
     std::vector<Query> queries;
 
   public:
-    reader() = default;
-
     reader (InStream& input) {
       std::vector<Query> temp_container;
       int num_of_lines;
@@ -89,8 +87,6 @@ class reader {
     const std::vector<Query>& GetQueries() const {
       return queries;
     }
-
-    ~reader() = default;
 };
 
 }
