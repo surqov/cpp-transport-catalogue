@@ -22,6 +22,7 @@ struct Stop {
 struct Bus {
     std::string name;
     std::vector<std::string> stops;
+    std::vector<Stop*> stops_pointers;
 };
 
 //функция хеширования до size_t для distances из долготы и широты домножением на единый множитель
@@ -45,8 +46,11 @@ class catalogue {
     
   public:
     catalogue();
-    void AddStop(const Stop& stop);
-    void FindStop(const Stop& stop) const; 
+    void AddStop(Stop& stop) {
+        stops.push_back(stop);
+        stopname_to_stop[stop.name] = &stop;
+    }
+    Stop& FindStop(const Stop& stop) const; 
     void AddBus(const Bus& bus);
     void FindBus(const Bus& bus) const;
     void GetBusInfo(const Bus& bus) const;
