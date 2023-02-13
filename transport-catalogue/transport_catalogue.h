@@ -47,6 +47,7 @@ class catalogue {
     catalogue();
     void AddStop(const Stop& stop) {
         stops.push_back(stop);
+        stopname_to_stop.insert({stop.name, &stop});
     }
     void FindStop(const Stop& stop) const; 
     void AddBus(const Bus& bus);
