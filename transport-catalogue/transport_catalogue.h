@@ -21,8 +21,8 @@ struct Stop {
 
 struct Bus {
     std::string name;
-    std::vector<std::string> stops;
-    std::vector<Stop*> stops_pointers;
+    std::vector<Stop*> stops;
+    bool symmetry = false;
 };
 
 //функция хеширования до size_t для distances из долготы и широты домножением на единый множитель
