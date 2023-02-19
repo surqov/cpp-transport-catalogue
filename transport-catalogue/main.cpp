@@ -8,8 +8,8 @@
 int main() {
     std::stringstream input{
         "3\n"
-        "Bus long: 97ChPsiaFJ xk - nhfM4\n"
-        "Stop 97ChPsiaFJ xk: 38.590881, 34.724362\n"
+        "Bus long: 97ChPsiaFJ - nhfM4\n"
+        "Stop 97ChPsiaFJ: 38.590881, 34.724362\n"
         "Stop nhfM4: 38.653078, 34.910424\n"
     };
     {

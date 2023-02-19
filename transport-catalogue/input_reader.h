@@ -39,9 +39,10 @@ std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
     
     while (pos != pos_end) {
       int64_t separator_pos = value.find_first_of(">,-", pos);
-      result.push_back(separator_pos == pos_end ? value.substr(pos + 1)  : value.substr(pos, separator_pos - pos));
+      result.push_back(separator_pos == pos_end ? value.substr(pos + 1)  : value.substr(pos, separator_pos - pos - 1));
       pos = value.find_first_not_of(">,-", separator_pos);
     }
+
     if (symmetry) result.insert(result.end(), result.rbegin(), result.rend() - 2);
 
     return result;
@@ -53,10 +54,8 @@ Query ParseToQuery(std::vector<std::string_view>&& string_container, std::unorde
   if (key == "Stop"s) {
     result.type = QueryType::NewStop;
     result.stop.name = string_container[1];
-    std::string_view lat = string_container[2];
-    std::string_view lng = string_container[3];
-    result.stop.coordinates.lat = std::stold(std::string(lat));
-    result.stop.coordinates.lng = std::stold(std::string(lng));
+    result.stop.coordinates.lat = std::stold(std::string(string_container[2]));
+    result.stop.coordinates.lng = std::stold(std::string(string_container[3]));
   } else {
     result.type = QueryType::NewBus;
     result.bus.name = string_container[1];
@@ -97,7 +96,7 @@ class reader {
       queries.reserve(raw_queries.size());
       for (auto it = raw_queries.begin(); it != raw_queries.end(); ++it){
         for (auto& s : SplitIntoWords(*it)) {
-          std::cout << s << "\n";
+          std::cout << s << "|\n";
         }
         if (GetQueryTypeFromLine(*it) == QueryType::NewStop) {
           queries.push_back(std::move(ParseToQuery(SplitIntoWords(*it), stops_map)));
