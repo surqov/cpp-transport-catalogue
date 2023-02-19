@@ -39,7 +39,8 @@ std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
     
     while (pos != pos_end) {
       int64_t separator_pos = value.find_first_of(">,-", pos);
-      result.push_back(separator_pos == pos_end ? value.substr(pos + 1)  : value.substr(pos, separator_pos - pos - 1));
+      std::string_view name_ = separator_pos == pos_end ? value.substr(pos + 1)  : value.substr(pos, separator_pos - pos);
+      result.push_back(name_.substr(name_.find_first_not_of(' '), name_.find_last_not_of(' ') - name_.find_first_not_of(' ') + 1));
       pos = value.find_first_not_of(">,-", separator_pos);
     }
 
@@ -48,7 +49,7 @@ std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
     return result;
 }
 
-Query ParseToQuery(std::vector<std::string_view>&& string_container, std::unordered_map<std::string_view, transport::Stop*>& stops_map) {
+Query ParseToQuery(std::vector<std::string_view>&& string_container, const std::unordered_map<std::string_view, transport::Stop*>& stops_map) {
   Query result;
   std::string_view key = string_container.front();
   if (key == "Stop"s) {
@@ -73,7 +74,7 @@ QueryType GetQueryTypeFromLine(const std::string_view& line) {
 template <class InStream>
 class reader {
   private:
-    std::deque<std::string> raw_queries;
+    std::vector<std::string> raw_queries;
     std::vector<Query> queries;
     std::unordered_map<std::string_view, transport::Stop*> stops_map;
     
@@ -84,20 +85,18 @@ class reader {
       std::string line;
       std::getline(input, line);
       num_of_lines = std::stoi(line);
+      raw_queries.reserve(num_of_lines);
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
         if (GetQueryTypeFromLine(line) == QueryType::NewStop) {
-          raw_queries.push_front(std::move(line));
+          raw_queries.insert(raw_queries.begin(), std::move(line));
         } else {
-          raw_queries.push_back(std::move(line));
+          raw_queries.insert(raw_queries.end(), std::move(line));
         }
       }
       //сделаем вектор запросов
       queries.reserve(raw_queries.size());
       for (auto it = raw_queries.begin(); it != raw_queries.end(); ++it){
-        for (auto& s : SplitIntoWords(*it)) {
-          std::cout << s << "|\n";
-        }
         if (GetQueryTypeFromLine(*it) == QueryType::NewStop) {
           queries.push_back(std::move(ParseToQuery(SplitIntoWords(*it), stops_map)));
           stops_map.insert({queries.back().stop.name, &queries.back().stop});
