@@ -77,7 +77,6 @@ class reader {
     std::vector<std::string> raw_queries;
     std::vector<Query> queries;
     std::unordered_map<std::string_view, transport::Stop*> stops_map;
-    
   public:
     reader (InStream& input) {
       //прочитаем список запросов на запись
@@ -86,14 +85,21 @@ class reader {
       std::getline(input, line);
       num_of_lines = std::stoi(line);
       raw_queries.reserve(num_of_lines);
+
+      std::vector<std::string> bus_req;
+      bus_req.reserve(num_of_lines);
+
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
         if (GetQueryTypeFromLine(line) == QueryType::NewStop) {
-          raw_queries.insert(raw_queries.begin(), std::move(line));
+          raw_queries.push_back(std::move(line));
         } else {
-          raw_queries.insert(raw_queries.end(), std::move(line));
+          bus_req.push_back(std::move(line));
         }
       }
+
+      std::move(bus_req.begin(), bus_req.end(), std::back_inserter(raw_queries));
+
       //сделаем вектор запросов
       queries.reserve(raw_queries.size());
       for (auto it = raw_queries.begin(); it != raw_queries.end(); ++it){
