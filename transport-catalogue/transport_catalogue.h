@@ -1,6 +1,8 @@
 #pragma once
 
 #include "geo.h"
+#include "input_reader.h"
+#include "stat_reader.h"
 
 #include <deque>
 #include <string>
@@ -35,6 +37,7 @@ struct StopHash {
     }
 };
 
+template <class IStream>
 class catalogue {
   private:
     std::deque<Stop> stops;
@@ -44,15 +47,39 @@ class catalogue {
     std::unordered_map<std::pair<Stop*, Stop*>, int, StopHash> distances;
     
   public:
-    catalogue();
+    catalogue(const reader::reader<IStream>& queries) {
+        for (const reader::Query& query_ : queries.GetQueries()) {
+            if (query_.type == reader::QueryType::NewStop) {
+                stopname_to_stop[query_.stop.name] = &query_.stop;
+                stops.push_back(std::move(query_.stop));
+            } else {
+                busname_to_bus[query_.bus.name] = &query_.bus;
+                buses.push_back(std::move(query_.bus));
+            }
+        }
+    }
+
     void AddStop(Stop& stop) {
         stops.push_back(stop);
-        stopname_to_stop[stop.name] = &stop;
+        stopname_to_stop[stop.name] = stops.back();
     }
-    Stop& FindStop(const Stop& stop) const; 
-    void AddBus(const Bus& bus);
-    void FindBus(const Bus& bus) const;
-    void GetBusInfo(const Bus& bus) const;
+
+    bool FindStop(const Stop& stop) const {
+        return stopname_to_stop.find(stop.name);
+    }
+
+    void AddBus(const Bus& bus) {
+        buses.push_back(bus);
+        busname_to_bus[bus.name] = buses.back();
+    }
+
+    bool FindBus(const Bus& bus) const {
+        return busname_to_bus.find(bus.name);
+    }
+
+    stat::BusInfo GetBusInfo(const Bus& bus) const {
+        
+    }
 };
 
 }

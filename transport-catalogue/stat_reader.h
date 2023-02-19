@@ -1,5 +1,7 @@
 #pragma once
 
+#include "transport_catalogue.h"
+
 #include <cassert>
 #include <sstream>
 #include <iostream>
@@ -7,127 +9,41 @@
 #include <string>
 #include <vector>
 
-using namespace std;
+using namespace std::literals;
+
+namespace stat {
 
 enum class QueryType {
-    NewBus,
-    BusesForStop,
-    StopsForBus,
-    AllBuses,
+    BusInfo
 };
 
 struct Query {
     QueryType type;
-    string bus;
-    string stop;
-    vector<string> stops;
+    std::string busname;
 };
 
-struct BusesForStopResponse {
-    std::string_view stop;
-    std::vector<std::string_view> buses;
+struct BusInfo {
+    std::string_view busname;
+    int stops_on_route;
+    int unique_stops;
+    double route_len;
+    bool founded;
 };
 
-istream& operator>>(istream& is, Query& q) {
-    string s;
-    is >> s;
-    q.bus = ""s;
-    q.stop = ""s;
-    q.stops = {};
-
-    if (s == "NEW_BUS"s) q.type = QueryType::NewBus;
-    else if (s == "BUSES_FOR_STOP"s) q.type = QueryType::BusesForStop;
-    else if (s == "STOPS_FOR_BUS"s) q.type = QueryType::StopsForBus;
-    else q.type = QueryType::AllBuses;   
-    
-    if ((q.type == QueryType::NewBus) || (q.type == QueryType::StopsForBus)) {
-        is >> q.bus;
-    
-        if (q.type == QueryType::NewBus) {       
-            int stop_count;
-            is >> stop_count;
-            string line;
-            getline(is, line);
-            q.stops = SplitIntoWords(line);
-        }
-
-    } else if (q.type == QueryType::BusesForStop){
-        is >> q.stop;
-    }   
-    
-    return is;
-}
-
-struct BusesForStopResponse {
-    string stop;
-    vector<string> buses;
-};
-
-ostream& operator<<(ostream& os, const BusesForStopResponse& r) {
-    if (r.buses.empty()) {
-        os << "No stop"s;
+std::ostream& operator<<(std::ostream& os, BusInfo& info_) {
+    os << std::setprecision(precision);
+    os << info_.busname << ": "s;
+    if (!info_.founded) {
+        os << "not found\n"s;
     } else {
-        for (const string& bus : r.buses) {
-            os << bus << " "s;
-        }
-    }
+        os << info_.stops_on_route << " stops on route, "s << info_.unique_stops << "unique stops, "s 
+        << info_.route_len  << " route lenght\n";
+    } 
     return os;
 }
 
-struct StopsForBusResponse {
-    string bus;
-    vector<string> stops;
-    map<string, vector<string>> stops_to_buses;
-};
 
-ostream& operator<<(ostream& os, const StopsForBusResponse& r) {
-    if (r.stops.empty()) {
-        os << "No bus"s;
-    } else {
-        int count = 0;
-        for (const string& stop : r.stops) {
-            ++count;
-            os << "Stop "s << stop << ": "s;
-            if (r.stops_to_buses.at(stop).size() == 1) {
-                os << "no interchange"s;
-            } else {                
-                for (const string& other_bus : r.stops_to_buses.at(stop)) {
-                    if (r.bus != other_bus) {
-                        os << other_bus << " "s;
-                    }   
-                }         
-            }
-            bool next_line = static_cast<int>(r.stops.size()) == count;
-            if(!next_line) os << endl;      
-        }
-    }
-    return os;
-}
-
-struct AllBusesResponse {
-    map<string, vector<string>> buses_to_stops;
-    map<string, vector<string>> stops_to_buses;
-};
-
-ostream& operator<<(ostream& os, const AllBusesResponse& r) {
-    if (r.buses_to_stops.empty()) {
-        os << "No buses"s;
-    } else {
-        int count =0;
-        for (const auto& bus_item : r.buses_to_stops) {
-            ++count;
-            os << "Bus "s << bus_item.first << ": "s;
-            for (const string& stop : bus_item.second) {
-                os << stop << " "s;
-            }
-            bool next_line = static_cast<int>(r.buses_to_stops.size()) == count;
-            if(!next_line) os << endl; 
-        }
-              
-    }
-    return os;
-}
-
+template <class IStream, class OStream>
 class BusManager {
 private:
     map<string, vector<string>> buses_to_stops_, stops_to_buses_;
@@ -196,4 +112,6 @@ int main() {
                 break;
         }
     }
+}
+
 }

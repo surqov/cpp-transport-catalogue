@@ -8,7 +8,6 @@
 #include <string_view>
 #include <deque>
 #include <functional>
-#include <charconv>
 
 using namespace std::literals;
 
@@ -71,14 +70,15 @@ QueryType GetQueryTypeFromLine(const std::string_view& line) {
   return line.substr(0, line.find_first_of(' ')) == "Bus"s ? QueryType::NewBus : QueryType::NewStop;
 }
 
-template <class InStream>
+template <class IStream>
 class reader {
   private:
     std::vector<std::string> raw_queries;
     std::vector<Query> queries;
     std::unordered_map<std::string_view, transport::Stop*> stops_map;
+
   public:
-    reader (InStream& input) {
+    reader (IStream& input) {
       //прочитаем список запросов на запись
       int num_of_lines;
       std::string line;
@@ -97,7 +97,6 @@ class reader {
           bus_req.push_back(std::move(line));
         }
       }
-
       std::move(bus_req.begin(), bus_req.end(), std::back_inserter(raw_queries));
 
       //сделаем вектор запросов
