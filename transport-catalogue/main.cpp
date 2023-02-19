@@ -6,7 +6,7 @@
 #include <fstream>
 
 int main() {
-    std::stringstream {
+    std::stringstream input{
         "3\n"
         "Bus long: 97ChPsiaFJ xk - nhfM4\n"
         "Stop 97ChPsiaFJ xk: 38.590881, 34.724362\n"
@@ -14,7 +14,7 @@ int main() {
     };
     {
         LOG_DURATION("Loaded queries for"s);
-        reader::reader<std::ifstream> queries(file);
+        reader::reader<std::stringstream> queries(input);
         auto l_4 = queries.GetQueries();
         std::cout << "";
     }

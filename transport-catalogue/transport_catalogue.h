@@ -15,14 +15,13 @@ const char precision = 6;
 namespace transport { 
 
 struct Stop {
-    std::string name;
+    std::string_view name;
     geo::Coordinates coordinates; 
 };
 
 struct Bus {
-    std::string name;
+    std::string_view name;
     std::vector<Stop*> stops;
-    bool symmetry = false;
 };
 
 //функция хеширования до size_t для distances из долготы и широты домножением на единый множитель

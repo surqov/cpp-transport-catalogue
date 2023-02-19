@@ -2,5 +2,7 @@
 #include "input_reader.h"
 #include "transport_catalogue.h"
 
-
+void TestLinesSplitter();
+void TestQueryParsing();
+void 
 
