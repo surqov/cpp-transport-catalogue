@@ -10,6 +10,7 @@
 #include <string_view>
 #include <iomanip>
 #include <vector>
+#include <numeric>
 
 const double ACCURACY = 1e-6;
 const char precision = 6;
@@ -37,49 +38,6 @@ struct StopHash {
     }
 };
 
-template <class IStream>
-class catalogue {
-  private:
-    std::deque<Stop> stops;
-    std::deque<Bus> buses;
-    std::unordered_map<std::string_view, Stop*> stopname_to_stop;
-    std::unordered_map<std::string_view, Bus*> busname_to_bus;
-    std::unordered_map<std::pair<Stop*, Stop*>, int, StopHash> distances;
-    
-  public:
-    catalogue(const reader::reader<IStream>& queries) {
-        for (const reader::Query& query_ : queries.GetQueries()) {
-            if (query_.type == reader::QueryType::NewStop) {
-                stopname_to_stop[query_.stop.name] = &query_.stop;
-                stops.push_back(std::move(query_.stop));
-            } else {
-                busname_to_bus[query_.bus.name] = &query_.bus;
-                buses.push_back(std::move(query_.bus));
-            }
-        }
-    }
 
-    void AddStop(Stop& stop) {
-        stops.push_back(stop);
-        stopname_to_stop[stop.name] = stops.back();
-    }
-
-    bool FindStop(const Stop& stop) const {
-        return stopname_to_stop.find(stop.name);
-    }
-
-    void AddBus(const Bus& bus) {
-        buses.push_back(bus);
-        busname_to_bus[bus.name] = buses.back();
-    }
-
-    bool FindBus(const Bus& bus) const {
-        return busname_to_bus.find(bus.name);
-    }
-
-    stat::BusInfo GetBusInfo(const Bus& bus) const {
-        
-    }
-};
 
 }

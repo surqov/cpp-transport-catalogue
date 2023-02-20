@@ -1,6 +1,6 @@
 #include "log_duration.h"
 #include "input_reader.h"
-#include "transport_catalogue.h"
+//#include "transport_catalogue.h"
 
 #include <sstream>
 #include <fstream>
@@ -17,14 +17,14 @@ int main() {
         };
         LOG_DURATION("StringStream "s);
         reader::reader<std::stringstream> queries(input);
-        auto l_4 = queries.GetQueries();
+        //transport::catalogue<std::stringstream> catalog(queries);
         std::cout << "";
     }
     {
-        std::fstream input2("assert_files/tsA_case2_input.txt");
+        std::fstream input("assert_files/tsA_case2_input.txt");
         LOG_DURATION("FileStream "s);
-        reader::reader<std::fstream> queries(input2);
-        auto l_4 = queries.GetQueries();
+        reader::reader<std::fstream> queries(input);
+        //transport::catalogue<std::stringstream> catalog(queries);
         std::cout << "";
     }
 

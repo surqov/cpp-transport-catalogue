@@ -48,7 +48,7 @@ std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
     return result;
 }
 
-Query ParseToQuery(std::vector<std::string_view>&& string_container, const std::unordered_map<std::string_view, transport::Stop*>& stops_map) {
+Query ParseToQuery(const std::vector<std::string_view>& string_container, const std::unordered_map<std::string_view, transport::Stop*>& stops_map) {
   Query result;
   std::string_view key = string_container.front();
   if (key == "Stop"s) {
