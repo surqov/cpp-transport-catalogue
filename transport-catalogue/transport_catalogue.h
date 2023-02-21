@@ -1,8 +1,5 @@
 #pragma once
 #include "geo.h"
-#include "input_reader.h"
-#include "transport_catalogue.h"
-#include "stat_reader.h"
 
 #include <deque>
 #include <string>
@@ -36,6 +33,14 @@ struct Query {
     Stop stop;
 };
 
+struct BusInfo {
+    std::string_view busname;
+    bool founded;
+    int stops_on_route;
+    int unique_stops;
+    double route_len;
+};
+
 class bus_catalogue {
   private:
     std::deque<Stop> stops;
@@ -60,7 +65,8 @@ class bus_catalogue {
         BusInfo info_;
         info_.busname = bus_name;
         info_.founded = busname_to_bus.find(bus_name) != busname_to_bus.end();
-        info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
+        if (info_.founded) info_.stops_on_route = busname_to_bus[bus_name]->stops.size();
+
         return info_;
     }
 };

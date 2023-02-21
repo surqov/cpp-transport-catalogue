@@ -11,7 +11,6 @@ int main() {
 
     reader<std::fstream> queries(input);
     bus_catalogue catalog(queries.GetQueries());
-    stat<std::fstream> output(input);
-
+    stat<std::fstream> output(input, catalog);
     return 0;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "transport_catalogue.h"
 
 #include <cassert>
 #include <sstream>
@@ -10,15 +11,7 @@
 
 using namespace std::literals;
 
-struct BusInfo {
-    std::string_view busname;
-    bool founded;
-    int stops_on_route;
-    int unique_stops;
-    double route_len;
-};
-
-std::ostream& operator<<(std::ostream& os, BusInfo& info_) {
+std::ostream& operator<<(std::ostream& os, BusInfo info_) {
     os << info_.busname << ": "s;
     if (!info_.founded) {
         os << "not found\n"s;
@@ -31,7 +24,7 @@ std::ostream& operator<<(std::ostream& os, BusInfo& info_) {
 
 template <class IStream>
 class stat {
-  private:
+  private: 
     std::vector<std::string> raw_queries;
 
   public:
@@ -44,8 +37,8 @@ class stat {
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
         raw_queries.push_back(line);
-        std::string busname = line.substr(0, line.find_first_of(' '));
-        catalog.GetBusInfo(busname);
+        std::string busname = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
+        std::cout << catalog.GetBusInfo(busname);
       }
     }
 };
