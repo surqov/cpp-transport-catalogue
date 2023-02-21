@@ -98,7 +98,7 @@ class reader {
       }
     }
 
-    std::vector<Query> GetQueries() {
+    std::vector<Query>& GetQueries() {
       return queries;
     }
 };

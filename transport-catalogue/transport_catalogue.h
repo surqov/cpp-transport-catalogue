@@ -9,6 +9,7 @@
 #include <vector>
 #include <numeric>
 #include <sstream>
+#include <iostream>
 
 using namespace std::literals;
 
@@ -49,14 +50,14 @@ class bus_catalogue {
     std::unordered_map<std::string_view, Bus*> busname_to_bus;
     
   public:
-    bus_catalogue(std::vector<Query> queries) {
+    bus_catalogue(std::vector<Query>& queries) {
         for (Query& query_ : queries) {
             if (query_.type == QueryType::NewStop) {
                 stopname_to_stop[query_.stop.name] = &query_.stop;
-                stops.push_back(std::move(query_.stop));
+                //stops.push_back(std::move(query_.stop));
             } else {
                 busname_to_bus[query_.bus.name] = &query_.bus;
-                buses.push_back(std::move(query_.bus));
+                //buses.push_back(std::move(query_.bus));
             }
         }
     }
@@ -65,8 +66,10 @@ class bus_catalogue {
         BusInfo info_;
         info_.busname = bus_name;
         info_.founded = busname_to_bus.find(bus_name) != busname_to_bus.end();
-        if (info_.founded) info_.stops_on_route = busname_to_bus[bus_name]->stops.size();
-
+        if (info_.founded) {
+            info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
+            
+        }
         return info_;
     }
 };
