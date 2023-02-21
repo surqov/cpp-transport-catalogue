@@ -61,7 +61,6 @@ class bus_catalogue {
         info_.busname = bus_name;
         info_.founded = busname_to_bus.find(bus_name) != busname_to_bus.end();
         info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
-        
         return info_;
     }
 };

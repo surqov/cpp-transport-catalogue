@@ -1,5 +1,4 @@
 #pragma once
-#include "transport_catalogue.h"
 
 #include <cassert>
 #include <sstream>
@@ -36,7 +35,7 @@ class stat {
     std::vector<std::string> raw_queries;
 
   public:
-    stat(IStream& input) {
+    stat(IStream& input, bus_catalogue& catalog) {
       int num_of_lines;
       std::string line;
       std::getline(input, line);
@@ -45,6 +44,8 @@ class stat {
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
         raw_queries.push_back(line);
+        std::string busname = line.substr(0, line.find_first_of(' '));
+        catalog.GetBusInfo(busname);
       }
     }
 };
