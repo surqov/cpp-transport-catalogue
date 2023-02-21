@@ -36,15 +36,15 @@ struct Query {
 
 struct BusInfo {
     std::string_view busname;
-    bool founded;
-    int stops_on_route;
-    int unique_stops;
-    double route_len;
+    bool founded = false;
+    int stops_on_route = 0;
+    int unique_stops = 0;
+    double route_len = 0.0;
 };
 
 class bus_catalogue {
   private:
-    std::deque<Stop> stops;
+    //std::deque<Stop> stops;
     std::deque<Bus> buses;
     std::unordered_map<std::string_view, Stop*> stopname_to_stop;
     std::unordered_map<std::string_view, Bus*> busname_to_bus;
@@ -68,8 +68,18 @@ class bus_catalogue {
         info_.founded = busname_to_bus.find(bus_name) != busname_to_bus.end();
         if (info_.founded) {
             info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
-            
-        }
+            info_.unique_stops = 
+            info_.route_len = std::transform_reduce(
+                busname_to_bus.at(bus_name)->stops.begin(),
+                busname_to_bus.at(bus_name)->stops.end() - 1,
+                busname_to_bus.at(bus_name)->stops.begin() + 1,
+                0.0,
+                std::plus<double>(),
+                [](const auto& lhs, const auto& rhs) {
+                    return geo::ComputeDistance(lhs->coordinates, rhs->coordinates);
+                }
+            );
+            }
         return info_;
     }
 };

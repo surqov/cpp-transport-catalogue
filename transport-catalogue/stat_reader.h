@@ -16,7 +16,7 @@ std::ostream& operator<<(std::ostream& os, BusInfo info_) {
     if (!info_.founded) {
         os << "not found\n"s;
     } else {
-        os << info_.stops_on_route << " stops on route, "s << info_.unique_stops << "unique stops, "s 
+        os << info_.stops_on_route << " stops on route, "s << info_.unique_stops << " unique stops, "s 
         << info_.route_len  << " route lenght\n"s;
     } 
     return os;
