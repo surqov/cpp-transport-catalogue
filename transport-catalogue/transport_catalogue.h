@@ -10,6 +10,7 @@
 #include <numeric>
 #include <sstream>
 #include <iostream>
+#include <set>
 
 using namespace std::literals;
 
@@ -69,13 +70,7 @@ class bus_catalogue {
         info_.founded = busname_to_bus.find(bus_name) != busname_to_bus.end();
         if (info_.founded) {
             info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
-            info_.unique_stops = std::count_if(
-                busname_to_bus.at(bus_name)->stops.begin(),
-                busname_to_bus.at(bus_name)->stops.end(),
-                [&bus_name, this](const auto& elem) {
-                    return std::count(busname_to_bus.at(bus_name)->stops.begin(), busname_to_bus.at(bus_name)->stops.end(), elem) <= 2;
-                }
-            );
+            info_.unique_stops = std::set(busname_to_bus.at(bus_name)->stops.begin(), busname_to_bus.at(bus_name)->stops.end()).size();
             info_.route_len = std::transform_reduce(
                 busname_to_bus.at(bus_name)->stops.begin(),
                 busname_to_bus.at(bus_name)->stops.end() - 1,

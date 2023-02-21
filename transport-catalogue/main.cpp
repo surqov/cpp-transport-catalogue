@@ -7,7 +7,8 @@
 using namespace std::literals;
 
 int main() {
-    std::fstream input("assert_files/test_from_yandex.txt");
+    //std::fstream input("assert_files/test_from_yandex.txt");
+    std::fstream input("assert_files/tsA_case1_input.txt");
 
     reader<std::fstream> queries(input);
     bus_catalogue catalog(queries.GetQueries());
