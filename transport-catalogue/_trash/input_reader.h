@@ -1,5 +1,6 @@
 #pragma once
-#include "transport_catalogue.h"
+
+#include "geo.h"
 
 #include <string>
 #include <vector>
@@ -10,6 +11,27 @@
 #include <unordered_map>
 
 using namespace std::literals;
+
+struct Stop {
+    std::string_view name;
+    geo::Coordinates coordinates; 
+};
+
+struct Bus {
+    std::string_view name;
+    std::vector<Stop*> stops;
+};
+
+enum class QueryType {
+    NewStop,
+    NewBus
+};
+
+struct Query {
+    QueryType type;
+    Bus bus;
+    Stop stop;
+};
 
 std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
     std::vector<std::string_view> result;
@@ -98,7 +120,7 @@ class reader {
       }
     }
 
-    std::vector<Query> GetQueries() {
+    const std::vector<Query>& GetQueries() const {
       return queries;
     }
 };

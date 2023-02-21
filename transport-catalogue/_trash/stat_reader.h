@@ -9,14 +9,16 @@
 #include <vector>
 #include <string_view>
 
+class bus_catalogue;
+
 using namespace std::literals;
 
 struct BusInfo {
     std::string_view busname;
-    bool founded;
     int stops_on_route;
     int unique_stops;
     double route_len;
+    bool founded;
 };
 
 std::ostream& operator<<(std::ostream& os, BusInfo& info_) {
@@ -36,7 +38,7 @@ class stat {
     std::vector<std::string> raw_queries;
 
   public:
-    stat(IStream& input) {
+    stat(IStream& input, bus_catalogue& catalogue_) {
       int num_of_lines;
       std::string line;
       std::getline(input, line);
@@ -45,6 +47,8 @@ class stat {
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
         raw_queries.push_back(line);
+        std::string_view bus_name = s.substr(s.find_first_of(' ') + 1, s.find_last_not_of(' ') - s.find_first_of(' ') - 1);
+        std::cout << catalogue_.GetBusInfo(bus_name);
       }
     }
 };

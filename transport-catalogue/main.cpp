@@ -1,32 +1,17 @@
-#include "log_duration.h"
 #include "input_reader.h"
-//#include "transport_catalogue.h"
+#include "transport_catalogue.h"
+#include "stat_reader.h"
 
-#include <sstream>
 #include <fstream>
 
+using namespace std::literals;
+
 int main() {
-    {
-        std::stringstream input{
-        "5\n"
-        "Bus long: l3A - kv8A5AKGj iN - RCMbeebIuxiDV - 3\n"
-        "Stop l3A: 38.460784, 34.937663\n"
-        "Stop kv8A5AKGj iN: 38.716203, 34.779089\n"
-        "Stop RCMbeebIuxiDV: 38.700196, 34.821645\n"
-        "Stop 3: 38.708395, 34.867487\n"
-        };
-        LOG_DURATION("StringStream "s);
-        reader::reader<std::stringstream> queries(input);
-        //transport::catalogue<std::stringstream> catalog(queries);
-        std::cout << "";
-    }
-    {
-        std::fstream input("assert_files/tsA_case2_input.txt");
-        LOG_DURATION("FileStream "s);
-        reader::reader<std::fstream> queries(input);
-        //transport::catalogue<std::stringstream> catalog(queries);
-        std::cout << "";
-    }
+    std::fstream input("assert_files/tsA_case1_input.txt");
+
+    reader<std::fstream> queries(input);
+    bus_catalogue catalog(queries.GetQueries());
+    stat<std::fstream> output(input);
 
     return 0;
 }

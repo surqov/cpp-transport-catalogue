@@ -4,5 +4,4 @@
 
 void TestLinesSplitter();
 void TestQueryParsing();
-void 
 
