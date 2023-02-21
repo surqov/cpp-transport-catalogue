@@ -30,7 +30,7 @@ std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
       pos = value.find_first_not_of(">,-", separator_pos);
     }
 
-    if (symmetry) result.insert(result.end(), result.rbegin(), result.rend() - 2);
+    if (symmetry) result.insert(result.end(), result.rbegin() + 1, result.rend() - 2);
 
     return result;
 }

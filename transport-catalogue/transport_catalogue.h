@@ -21,6 +21,7 @@ struct Stop {
 struct Bus {
     std::string_view name;
     std::vector<Stop*> stops;
+    bool symmetry;
 };
 
 enum class QueryType {
@@ -72,7 +73,7 @@ class bus_catalogue {
                 busname_to_bus.at(bus_name)->stops.begin(),
                 busname_to_bus.at(bus_name)->stops.end(),
                 [&bus_name, this](const auto& elem) {
-                    return std::count(busname_to_bus.at(bus_name)->stops.begin(), busname_to_bus.at(bus_name)->stops.end(), elem) == 1;
+                    return std::count(busname_to_bus.at(bus_name)->stops.begin(), busname_to_bus.at(bus_name)->stops.end(), elem) <= 2;
                 }
             );
             info_.route_len = std::transform_reduce(
