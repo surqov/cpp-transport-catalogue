@@ -14,10 +14,10 @@ using namespace std::literals;
 std::ostream& operator<<(std::ostream& os, BusInfo info_) {
     os << info_.busname << ": "s;
     if (!info_.founded) {
-        os << "not found\n"s;
+        os << "not found"s;
     } else {
         os << info_.stops_on_route << " stops on route, "s << info_.unique_stops << " unique stops, "s 
-        << info_.route_len  << " route lenght\n"s;
+        << info_.route_len  << " route lenght"s;
     } 
     return os;
 }
@@ -38,7 +38,7 @@ class stat {
         std::getline(input, line);
         raw_queries.push_back(line);
         std::string busname = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
-        std::cout << catalog.GetBusInfo(busname);
+        std::cout << catalog.GetBusInfo(busname) << std::endl;
       }
     }
 };
