@@ -29,7 +29,7 @@ int main() {
             std::getline(std::cin, line);
             input << line << "\n";
         }
-        
+
         reader<std::stringstream> queries(input);
         bus_catalogue catalog(queries.GetQueries());
         stat<std::stringstream> output(input, catalog);
