@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include <set>
+#include <algorithm>
 
 using namespace std::literals;
 
@@ -44,22 +45,36 @@ struct BusInfo {
     double route_len = 0.0;
 };
 
+struct StopInfo {
+    std::string_view stopname;
+    bool founded = false;
+    std::set<Bus*> buses_to_stop;
+};
+
 class bus_catalogue {
   private:
-    //std::deque<Stop> stops;
+    std::deque<Stop> stops;
     std::deque<Bus> buses;
     std::unordered_map<std::string_view, Stop*> stopname_to_stop;
     std::unordered_map<std::string_view, Bus*> busname_to_bus;
+    std::unordered_map<std::string_view, std::set<Bus*>> stops_to_bus;
     
   public:
     bus_catalogue(std::vector<Query>& queries) {
         for (Query& query_ : queries) {
             if (query_.type == QueryType::NewStop) {
-                stopname_to_stop[query_.stop.name] = &query_.stop;
-                //stops.push_back(std::move(query_.stop));
+                std::string_view name_ = query_.stop.name;
+                stops.push_back(std::move(query_.stop));
+                stopname_to_stop[name_] = &stops.back();
             } else {
-                busname_to_bus[query_.bus.name] = &query_.bus;
-                //buses.push_back(std::move(query_.bus));
+                std::string_view name_ = query_.bus.name;
+                buses.push_back(std::move(query_.bus));
+                busname_to_bus[name_] = &buses.back();
+                std::for_each(busname_to_bus[name_]->stops.begin(),
+                    busname_to_bus[name_]->stops.end(),
+                    [this, name_](const auto& stop_) {
+                        stops_to_bus[stop_->name].insert(busname_to_bus.at(name_));
+                    });
             }
         }
     }
@@ -82,6 +97,16 @@ class bus_catalogue {
                 }
             );
             }
+        return info_;
+    }
+
+    StopInfo GetStopInfo(const std::string_view& stop_name) const {
+        StopInfo info_;
+        info_.stopname = stop_name;
+        info_.founded = stopname_to_stop.find(stop_name) != stopname_to_stop.end();
+        if (info_.founded) {
+            info_.buses_to_stop = stops_to_bus.at(stop_name);
+        }
         return info_;
     }
 };

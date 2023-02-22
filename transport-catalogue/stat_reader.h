@@ -1,5 +1,6 @@
 #pragma once
 #include "transport_catalogue.h"
+#include "input_reader.h"
 
 #include <cassert>
 #include <sstream>
@@ -12,13 +13,28 @@
 using namespace std::literals;
 
 std::ostream& operator<<(std::ostream& os, BusInfo info_) {
-    os << info_.busname << ": "s;
+    os << "Bus "s << info_.busname << ": "s;
     if (!info_.founded) {
         os << "not found"s;
     } else {
         os << info_.stops_on_route << " stops on route, "s << info_.unique_stops << " unique stops, "s 
-        << info_.route_len  << " route lenght"s;
+        << info_.route_len  << " route length"s;
     } 
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, StopInfo info_) {
+    os << "Stop "s << info_.stopname << ": "s;
+    if (!info_.founded) {
+        os << "not found"s;
+    } else if (info_.buses_to_stop.size() == 0) {
+        os << "no buses"s;
+    } else {
+        os << "buses "s;
+        for (const Bus* b : info_.buses_to_stop) {
+          os << b->name << " "s;
+        }
+    }
     return os;
 }
 
@@ -37,8 +53,12 @@ class stat {
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
         raw_queries.push_back(line);
-        std::string busname = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
-        std::cout << catalog.GetBusInfo(busname) << std::endl;
+        std::string name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
+        if (GetQueryTypeFromLine(line) == QueryType::NewBus) {
+          std::cout << catalog.GetBusInfo(name_) << std::endl;
+        } else {
+          std::cout << catalog.GetStopInfo(name_) << std::endl;
+        }
       }
     }
 };
