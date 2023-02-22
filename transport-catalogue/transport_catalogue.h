@@ -48,7 +48,7 @@ struct BusInfo {
 struct StopInfo {
     std::string_view stopname;
     bool founded = false;
-    std::set<Bus*> buses_to_stop;
+    std::set<std::string_view> buses_to_stop;
 };
 
 class bus_catalogue {
@@ -58,6 +58,7 @@ class bus_catalogue {
     std::unordered_map<std::string_view, Stop*> stopname_to_stop;
     std::unordered_map<std::string_view, Bus*> busname_to_bus;
     std::unordered_map<std::string_view, std::set<Bus*>> stops_to_bus;
+    std::unordered_map<std::string_view, std::set<std::string_view>> stopname_to_busname;
     
   public:
     bus_catalogue(std::vector<Query>& queries) {
@@ -74,6 +75,7 @@ class bus_catalogue {
                     busname_to_bus[name_]->stops.end(),
                     [this, name_](const auto& stop_) {
                         stops_to_bus[stop_->name].insert(busname_to_bus.at(name_));
+                        stopname_to_busname[stop_->name].insert(busname_to_bus.at(name_)->name);
                     });
             }
         }
@@ -104,8 +106,9 @@ class bus_catalogue {
         StopInfo info_;
         info_.stopname = stop_name;
         info_.founded = stopname_to_stop.find(stop_name) != stopname_to_stop.end();
-        if (info_.founded && stops_to_bus.find(stop_name) != stops_to_bus.end()) {
-            info_.buses_to_stop = stops_to_bus.at(stop_name);
+        if (info_.founded && stopname_to_busname.find(stop_name) != stopname_to_busname.end()) {
+            
+            info_.buses_to_stop = stopname_to_busname.at(stop_name);
         }
         return info_;
     }

@@ -31,8 +31,8 @@ std::ostream& operator<<(std::ostream& os, StopInfo info_) {
         os << "no buses"s;
     } else {
         os << "buses"s;
-        for (const Bus* b : info_.buses_to_stop) {
-          os << " "s << b->name;
+        for (const auto& b : info_.buses_to_stop) {
+          os << " "s << b;
         }
     }
     return os;

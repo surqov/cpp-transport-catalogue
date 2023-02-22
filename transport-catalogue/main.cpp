@@ -30,8 +30,7 @@ int main() {
             std::getline(std::cin, line);
             input << line << "\n";
         }*/
-        LOG_DURATION("READ");
-        std::fstream input("assert_files_stop/tsB_case2_input.txt"s);
+        std::fstream input("assert_files_stop/tsB_case1_input.txt"s);
         reader<std::fstream> queries(input);
         bus_catalogue catalog(queries.GetQueries());
         stat<std::fstream> output(input, catalog);
