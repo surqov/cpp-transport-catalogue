@@ -1,6 +1,7 @@
 #include "input_reader.h"
 #include "transport_catalogue.h"
 #include "stat_reader.h"
+#include "log_duration.h"
 
 #include <fstream>
 #include <sstream>
@@ -29,9 +30,8 @@ int main() {
             std::getline(std::cin, line);
             input << line << "\n";
         }*/
-
-        std::fstream input("assert_files/test_from_yandex.txt"s);
-
+        LOG_DURATION("READ");
+        std::fstream input("assert_files_stop/tsB_case2_input.txt"s);
         reader<std::fstream> queries(input);
         bus_catalogue catalog(queries.GetQueries());
         stat<std::fstream> output(input, catalog);

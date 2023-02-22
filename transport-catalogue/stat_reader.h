@@ -30,9 +30,9 @@ std::ostream& operator<<(std::ostream& os, StopInfo info_) {
     } else if (info_.buses_to_stop.size() == 0) {
         os << "no buses"s;
     } else {
-        os << "buses "s;
+        os << "buses"s;
         for (const Bus* b : info_.buses_to_stop) {
-          os << b->name << " "s;
+          os << " "s << b->name;
         }
     }
     return os;

@@ -103,8 +103,8 @@ class bus_catalogue {
     StopInfo GetStopInfo(const std::string_view& stop_name) const {
         StopInfo info_;
         info_.stopname = stop_name;
-        info_.founded = stops_to_bus.find(stop_name) != stops_to_bus.end();
-        if (info_.founded) {
+        info_.founded = stopname_to_stop.find(stop_name) != stopname_to_stop.end();
+        if (info_.founded && stops_to_bus.find(stop_name) != stops_to_bus.end()) {
             info_.buses_to_stop = stops_to_bus.at(stop_name);
         }
         return info_;
