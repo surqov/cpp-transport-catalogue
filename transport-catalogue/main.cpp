@@ -11,7 +11,7 @@ using namespace std::literals;
 
 int main() {
     {
-        std::stringstream input;
+        /*std::stringstream input;
         std::string line;
         int num = 0;
         std::getline(std::cin, line);
@@ -28,11 +28,13 @@ int main() {
         while (num-- > 0) {
             std::getline(std::cin, line);
             input << line << "\n";
-        }
+        }*/
 
-        reader<std::stringstream> queries(input);
+        std::fstream input("assert_files/test_from_yandex.txt"s);
+
+        reader<std::fstream> queries(input);
         bus_catalogue catalog(queries.GetQueries());
-        stat<std::stringstream> output(input, catalog);
+        stat<std::fstream> output(input, catalog);
     }
     return 0;
 }
