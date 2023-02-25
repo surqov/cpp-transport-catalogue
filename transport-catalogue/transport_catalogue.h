@@ -44,6 +44,7 @@ struct BusInfo {
     int stops_on_route = 0;
     int unique_stops = 0;
     double route_len = 0.0;
+    double curvature = 0.0;
 };
 
 struct StopInfo {
@@ -120,6 +121,22 @@ class bus_catalogue {
                     return geo::ComputeDistance(lhs->coordinates, rhs->coordinates);
                 }
             );
+
+            double fact_len = std::transform_reduce(
+                busname_to_bus.at(bus_name)->stops.begin(),
+                busname_to_bus.at(bus_name)->stops.end() - 1,
+                busname_to_bus.at(bus_name)->stops.begin() + 1,
+                0.0,
+                std::plus<double>(),
+                [this](const auto& lhs, const auto& rhs) {
+                    Stop* lhs_stop = stopname_to_stop.at(lhs->name);
+                    Stop* rhs_stop = stopname_to_stop.at(rhs->name);
+                    return distances.find({lhs_stop, rhs_stop}) != distances.end() ? 
+                            distances.at({lhs_stop, rhs_stop}) : 
+                            1;
+                }
+            );
+            info_.curvature = fact_len / info_.route_len;
             }
         return info_;
     }
