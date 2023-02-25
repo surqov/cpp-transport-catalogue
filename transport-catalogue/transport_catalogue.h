@@ -18,7 +18,7 @@ using namespace std::literals;
 struct Stop {
     std::string_view name;
     geo::Coordinates coordinates; 
-    std::vector<std::pair<std::string_view, int>> distances;
+    std::vector<std::pair<std::string_view, double>> distances;
 };
 
 struct Bus {
@@ -52,6 +52,16 @@ struct StopInfo {
     std::set<std::string_view> buses_to_stop;
 };
 
+struct StopPairHasher {
+    size_t operator()(const std::pair<Stop*, Stop*>& stop) const {
+        const double lat1 = stop.first->coordinates.lat;
+        const double lng1 = stop.first->coordinates.lat;
+        const double lat2 = stop.second->coordinates.lat;
+        const double lng2 = stop.second->coordinates.lat;
+        return lat1 * 37 + lng1 * 37 * 37 + lat2 * 37 * 37 * 37 + lng2 * 37 * 37 * 37 * 37;
+    }
+};
+
 class bus_catalogue {
   private:
     std::deque<Stop> stops;
@@ -60,6 +70,7 @@ class bus_catalogue {
     std::unordered_map<std::string_view, Bus*> busname_to_bus;
     std::unordered_map<std::string_view, std::set<Bus*>> stops_to_bus;
     std::unordered_map<std::string_view, std::set<std::string_view>> stopname_to_busname;
+    std::unordered_map<std::pair<Stop*, Stop*>, double, StopPairHasher> distances;
     
   public:
     bus_catalogue(std::vector<Query>& queries) {
@@ -79,6 +90,16 @@ class bus_catalogue {
                         stopname_to_busname[stop_->name].insert(busname_to_bus.at(name_)->name);
                     });
             }
+        }
+        for (const auto& stop : stops) {
+            std::string_view name_ = stop.name;
+            std::for_each(stop.distances.begin(),
+                        stop.distances.end(),
+                        [this, name_](const auto& pair_) {
+                            distances.insert({{
+                                    stopname_to_stop[name_], stopname_to_stop[pair_.first]}, 
+                                    pair_.second});
+                            });
         }
     }
 

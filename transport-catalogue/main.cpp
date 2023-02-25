@@ -35,6 +35,7 @@ int main() {
             "Stop Prazhskaya\n"
             "Stop Biryulyovo Zapadnoye\n"
         };
+        LOG_DURATION("WELL "s);
         reader<std::stringstream> queries(input);
         bus_catalogue catalog(queries.GetQueries());
         stat<std::stringstream> output(input, catalog);
