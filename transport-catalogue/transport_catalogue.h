@@ -18,6 +18,7 @@ using namespace std::literals;
 struct Stop {
     std::string_view name;
     geo::Coordinates coordinates; 
+    std::vector<std::pair<std::string_view, int>> distances;
 };
 
 struct Bus {

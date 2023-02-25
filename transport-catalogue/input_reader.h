@@ -43,6 +43,11 @@ Query ParseToQuery(const std::vector<std::string_view>& string_container, const 
     result.stop.name = string_container[1];
     result.stop.coordinates.lat = std::stold(std::string(string_container[2]));
     result.stop.coordinates.lng = std::stold(std::string(string_container[3]));
+    if (string_container.size() > 4) {
+      std::string_view to_distance = string_container[4].substr(0, string_container[4].find_first_of('m'));
+      std::string_view to_stop = string_container[4].substr(string_container[4].find("to "s) + 3, string_container[4].size() - string_container[4].find("to "s) - 3);
+      result.stop.distances.push_back({to_stop, std::stoi(std::string(to_distance))});
+    }
   } else {
     result.type = QueryType::NewBus;
     result.bus.name = string_container[1];
