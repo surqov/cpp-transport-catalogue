@@ -35,6 +35,8 @@ int main() {
             "Stop Prazhskaya\n"
             "Stop Biryulyovo Zapadnoye\n"
         };
+        //LOG_DURATION("Time");
+        //std::fstream input("assert_files_curvature/tsC_case1_input.txt"s);
         reader<std::stringstream> queries(input);
         bus_catalogue catalog(queries.GetQueries());
         stat<std::stringstream> output(input, catalog);

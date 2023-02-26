@@ -111,7 +111,7 @@ class bus_catalogue {
         if (info_.founded) {
             info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
             info_.unique_stops = std::set(busname_to_bus.at(bus_name)->stops.begin(), busname_to_bus.at(bus_name)->stops.end()).size();
-            info_.route_len = std::transform_reduce(
+            double route_len = std::transform_reduce(
                 busname_to_bus.at(bus_name)->stops.begin(),
                 busname_to_bus.at(bus_name)->stops.end() - 1,
                 busname_to_bus.at(bus_name)->stops.begin() + 1,
@@ -136,7 +136,8 @@ class bus_catalogue {
                             distances.at({rhs_stop, lhs_stop});
                 }
             );
-            info_.curvature = fact_len / info_.route_len;
+            info_.curvature = fact_len / route_len;
+            info_.route_len = fact_len;
             }
         return info_;
     }
