@@ -11,7 +11,7 @@ using namespace std::literals;
 
 int main() {
     {
-        LOG_DURATION("Time");
+        //LOG_DURATION("Time");
         std::fstream input("assert_files_curvature/tsC_case1_input.txt"s);
         input_reader::reader<std::fstream> queries(input);
         catalogue::transport_catalogue catalogue(queries.GetQueries());
