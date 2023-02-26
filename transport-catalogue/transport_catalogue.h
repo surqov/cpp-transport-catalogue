@@ -133,7 +133,7 @@ class bus_catalogue {
                     Stop* rhs_stop = stopname_to_stop.at(rhs->name);
                     return distances.find({lhs_stop, rhs_stop}) != distances.end() ? 
                             distances.at({lhs_stop, rhs_stop}) : 
-                            1;
+                            distances.at({rhs_stop, lhs_stop});
                 }
             );
             info_.curvature = fact_len / info_.route_len;
