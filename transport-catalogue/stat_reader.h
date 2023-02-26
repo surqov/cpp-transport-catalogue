@@ -9,42 +9,37 @@
 #include <string>
 #include <vector>
 #include <string_view>
+#include <set>
 
 using namespace std::literals;
 
-std::ostream& operator<<(std::ostream& os, BusInfo info_) {
-    os << "Bus "s << info_.busname << ": "s;
-    if (!info_.founded) {
-        os << "not found"s;
-    } else {
-        os << info_.stops_on_route << " stops on route, "s << info_.unique_stops << " unique stops, "s 
-        << info_.route_len  << " route length, "s << info_.curvature << " curvature"s;
-    } 
-    return os;
-}
+namespace stat {
+struct BusInfo {
+    std::string_view busname;
+    bool founded = false;
+    int stops_on_route = 0;
+    int unique_stops = 0;
+    double route_len = 0.0;
+    double curvature = 0.0;
+};
 
-std::ostream& operator<<(std::ostream& os, StopInfo info_) {
-    os << "Stop "s << info_.stopname << ": "s;
-    if (!info_.founded) {
-        os << "not found"s;
-    } else if (info_.buses_to_stop.size() == 0) {
-        os << "no buses"s;
-    } else {
-        os << "buses"s;
-        for (const auto& b : info_.buses_to_stop) {
-          os << " "s << b;
-        }
-    }
-    return os;
-}
+struct StopInfo {
+    std::string_view stopname;
+    bool founded = false;
+    std::set<std::string_view> buses_to_stop;
+};
+
+std::ostream& operator<<(std::ostream& os, BusInfo info_);
+
+std::ostream& operator<<(std::ostream& os, StopInfo info_);
 
 template <class IStream>
-class stat {
+class stat_reader {
   private: 
     std::vector<std::string> raw_queries;
 
   public:
-    stat(IStream& input, bus_catalogue& catalog) {
+    stat_reader(IStream& input, catalogue::transport_catalogue& catalog) {
       int num_of_lines;
       std::string line;
       std::getline(input, line);
@@ -54,7 +49,7 @@ class stat {
         std::getline(input, line);
         raw_queries.push_back(line);
         std::string name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
-        if (GetQueryTypeFromLine(line) == QueryType::NewBus) {
+        if (input_reader::GetQueryTypeFromLine(line) == input_reader::QueryType::NewBus) {
           std::cout << catalog.GetBusInfo(name_) << std::endl;
         } else {
           std::cout << catalog.GetStopInfo(name_) << std::endl;
@@ -62,3 +57,5 @@ class stat {
       }
     }
 };
+
+}
