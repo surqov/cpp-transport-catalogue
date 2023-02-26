@@ -1,19 +1,18 @@
 #include "transport_catalogue.h"
 
-struct catalogue::StopPairHasher {
-    size_t operator()(const std::pair<Stop*, Stop*>& stop) const {
-        const double lat1 = stop.first->coordinates.lat;
-        const double lng1 = stop.first->coordinates.lat;
-        const double lat2 = stop.second->coordinates.lat;
-        const double lng2 = stop.second->coordinates.lat;
 
-        return lat1 * 37 + lng1 * 37 * 37 + lat2 * 37 * 37 * 37 + lng2 * 37 * 37 * 37 * 37;
-    }
-};
+size_t catalogue::StopPairHasher::operator()(const std::pair<Stop*, Stop*>& stop) const {
+    const double lat1 = stop.first->coordinates.lat;
+    const double lng1 = stop.first->coordinates.lat;
+    const double lat2 = stop.second->coordinates.lat;
+    const double lng2 = stop.second->coordinates.lat;
 
-catalogue::transport_catalogue::transport_catalogue(std::vector<input_reader::Query>& queries) {
-    for (input_reader::Query& query_ : queries) {
-        if (query_.type == input_reader::QueryType::NewStop) {
+    return lat1 * 37 + lng1 * 37 * 37 + lat2 * 37 * 37 * 37 + lng2 * 37 * 37 * 37 * 37;
+}
+
+catalogue::transport_catalogue::transport_catalogue(std::vector<Query>& queries) {
+    for (Query& query_ : queries) {
+        if (query_.type == QueryType::NewStop) {
             std::string_view name_ = query_.stop.name;
             stops.push_back(std::move(query_.stop));
             stopname_to_stop[name_] = &stops.back();
@@ -41,8 +40,8 @@ catalogue::transport_catalogue::transport_catalogue(std::vector<input_reader::Qu
     }
 }
 
-stat::BusInfo catalogue::transport_catalogue::GetBusInfo(const std::string_view& bus_name) const {
-    stat::BusInfo info_;
+catalogue::BusInfo catalogue::transport_catalogue::GetBusInfo(const std::string_view& bus_name) const {
+    BusInfo info_;
     info_.busname = bus_name;
     info_.founded = busname_to_bus.find(bus_name) != busname_to_bus.end();
     if (info_.founded) {
@@ -79,8 +78,8 @@ stat::BusInfo catalogue::transport_catalogue::GetBusInfo(const std::string_view&
     return info_;
 }
 
-stat::StopInfo catalogue::transport_catalogue::GetStopInfo(const std::string_view& stop_name) const {
-    stat::StopInfo info_;
+catalogue::StopInfo catalogue::transport_catalogue::GetStopInfo(const std::string_view& stop_name) const {
+    StopInfo info_;
     info_.stopname = stop_name;
     info_.founded = stopname_to_stop.find(stop_name) != stopname_to_stop.end();
     if (info_.founded && stopname_to_busname.find(stop_name) != stopname_to_busname.end()) {

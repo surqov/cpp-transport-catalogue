@@ -4,9 +4,6 @@
 
 namespace geo {
 
-int EART_RADIUS = 6371000;
-double PI = M_PI;
-    
 struct Coordinates {
     double lat;
     double lng;
@@ -14,6 +11,6 @@ struct Coordinates {
     bool operator!=(const Coordinates& other) const;
 };
 
-inline double ComputeDistance(Coordinates from, Coordinates to);
+double ComputeDistance(Coordinates from, Coordinates to);
 
 }

@@ -1,6 +1,6 @@
-#include "input_reader.h"
+#include "stat_reader.h"
 
-std::ostream& stat::operator<<(std::ostream& os, stat::BusInfo info_) {
+std::ostream& stat::operator<<(std::ostream& os, catalogue::BusInfo info_) {
     os << "Bus "s << info_.busname << ": "s;
     if (!info_.founded) {
         os << "not found"s;
@@ -11,7 +11,7 @@ std::ostream& stat::operator<<(std::ostream& os, stat::BusInfo info_) {
     return os;
 }
 
-std::ostream& stat::operator<<(std::ostream& os, stat::StopInfo info_) {
+std::ostream& stat::operator<<(std::ostream& os, catalogue::StopInfo info_) {
     os << "Stop "s << info_.stopname << ": "s;
     if (!info_.founded) {
         os << "not found"s;

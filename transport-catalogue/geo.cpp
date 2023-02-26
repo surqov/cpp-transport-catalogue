@@ -8,10 +8,10 @@ bool geo::Coordinates::operator!=(const geo::Coordinates& other) const {
     return !(*this == other);
 }
 
-inline double geo::ComputeDistance(geo::Coordinates from, geo::Coordinates to){
+double geo::ComputeDistance(geo::Coordinates from, geo::Coordinates to){
 if (from == to) return 0;
-static const double dr = PI / 180.;
+static const double dr = M_PI / 180.;
 return std::acos(std::sin(from.lat * dr) * std::sin(to.lat * dr)
             + std::cos(from.lat * dr) * std::cos(to.lat * dr) * std::cos(std::abs(from.lng - to.lng) * dr))
-    * EART_RADIUS;
+    * 6371000;
 }

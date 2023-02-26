@@ -26,11 +26,11 @@ std::vector<std::string_view> input_reader::SplitIntoWords(const std::string_vie
     return result;
 }
 
-input_reader::Query input_reader::ParseToQuery(const std::vector<std::string_view>& string_container, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map) {
-  Query result;
+catalogue::Query input_reader::ParseToQuery(const std::vector<std::string_view>& string_container, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map) {
+  catalogue::Query result;
   std::string_view key = string_container.front();
   if (key == "Stop"s) {
-    result.type = QueryType::NewStop;
+    result.type = catalogue::QueryType::NewStop;
     result.stop.name = string_container[1];
     result.stop.coordinates.lat = std::stold(std::string(string_container[2]));
     result.stop.coordinates.lng = std::stold(std::string(string_container[3]));
@@ -43,7 +43,7 @@ input_reader::Query input_reader::ParseToQuery(const std::vector<std::string_vie
       }
     }
   } else {
-    result.type = QueryType::NewBus;
+    result.type = catalogue::QueryType::NewBus;
     result.bus.name = string_container[1];
     for (auto it = string_container.begin() + 2; it != string_container.end(); ++it) {
       result.bus.stops.push_back(stops_map.at(*it));
@@ -52,6 +52,6 @@ input_reader::Query input_reader::ParseToQuery(const std::vector<std::string_vie
   return result;
 }
 
-input_reader::QueryType input_reader::GetQueryTypeFromLine(const std::string_view& line) {
-  return line.substr(0, line.find_first_of(' ')) == "Bus"s ? QueryType::NewBus : QueryType::NewStop;
+catalogue::QueryType input_reader::GetQueryTypeFromLine(const std::string_view& line) {
+  return line.substr(0, line.find_first_of(' ')) == "Bus"s ? catalogue::QueryType::NewBus : catalogue::QueryType::NewStop;
 }

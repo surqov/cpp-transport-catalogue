@@ -13,28 +13,17 @@ using namespace std::literals;
 
 namespace input_reader {
 
-enum class QueryType {
-    NewStop,
-    NewBus
-};
-
-struct Query {
-    QueryType type;
-    catalogue::Bus bus;
-    catalogue::Stop stop;
-};
-
 std::vector<std::string_view> SplitIntoWords(const std::string_view& input);
 
-Query ParseToQuery(const std::vector<std::string_view>& string_container, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map);
+catalogue::Query ParseToQuery(const std::vector<std::string_view>& string_container, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map);
 
-QueryType GetQueryTypeFromLine(const std::string_view& line);
+catalogue::QueryType GetQueryTypeFromLine(const std::string_view& line);
 
 template <class IStream>
 class reader {
   private:
     std::vector<std::string> raw_queries;
-    std::vector<Query> queries;
+    std::vector<catalogue::Query> queries;
     std::unordered_map<std::string_view, catalogue::Stop*> stops_map;
 
   public:
@@ -51,7 +40,7 @@ class reader {
 
       for (int i = 0; i < num_of_lines; ++i) {
         std::getline(input, line);
-        if (GetQueryTypeFromLine(line) == QueryType::NewStop) {
+        if (GetQueryTypeFromLine(line) == catalogue::QueryType::NewStop) {
           raw_queries.push_back(std::move(line));
         } else {
           bus_req.push_back(std::move(line));
@@ -62,7 +51,7 @@ class reader {
       //сделаем вектор запросов
       queries.reserve(raw_queries.size());
       for (auto it = raw_queries.begin(); it != raw_queries.end(); ++it){
-        if (GetQueryTypeFromLine(*it) == QueryType::NewStop) {
+        if (GetQueryTypeFromLine(*it) == catalogue::QueryType::NewStop) {
           queries.push_back(std::move(ParseToQuery(SplitIntoWords(*it), stops_map)));
           stops_map.insert({queries.back().stop.name, &queries.back().stop});
         } else {
@@ -71,7 +60,7 @@ class reader {
       }
     }
 
-    std::vector<Query>& GetQueries() {
+    std::vector<catalogue::Query>& GetQueries() {
       return queries;
     };
 };

@@ -1,7 +1,5 @@
 #pragma once
 #include "geo.h"
-#include "input_reader.h"
-#include "stat_reader.h"
 
 #include <deque>
 #include <string>
@@ -27,7 +25,32 @@ struct Stop {
 struct Bus {
     std::string_view name;
     std::vector<Stop*> stops;
-    bool symmetry;
+};
+
+enum class QueryType {
+    NewStop,
+    NewBus
+};
+
+struct Query {
+    QueryType type;
+    Bus bus;
+    Stop stop;
+};
+
+struct BusInfo {
+    std::string_view busname;
+    bool founded = false;
+    int stops_on_route = 0;
+    int unique_stops = 0;
+    double route_len = 0.0;
+    double curvature = 0.0;
+};
+
+struct StopInfo {
+    std::string_view stopname;
+    bool founded = false;
+    std::set<std::string_view> buses_to_stop;
 };
 
 struct StopPairHasher {
@@ -45,9 +68,9 @@ class transport_catalogue {
     std::unordered_map<std::pair<Stop*, Stop*>, double, StopPairHasher> distances;
     
   public:
-    transport_catalogue(std::vector<input_reader::Query>& queries);
-    stat::BusInfo GetBusInfo(const std::string_view& bus_name) const;
-    stat::StopInfo GetStopInfo(const std::string_view& stop_name) const;
+    transport_catalogue(std::vector<Query>& queries);
+    BusInfo GetBusInfo(const std::string_view& bus_name) const;
+    StopInfo GetStopInfo(const std::string_view& stop_name) const;
 };
 
 }
