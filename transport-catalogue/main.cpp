@@ -26,7 +26,7 @@ int main() {
             "Stop Biryulyovo Passazhirskaya: 55.580999, 37.659164, 1200m to Biryulyovo Zapadnoye\n"
             "Bus 828: Biryulyovo Zapadnoye > Universam > Rossoshanskaya ulitsa > Biryulyovo Zapadnoye\n"
             "Stop Rossoshanskaya ulitsa: 55.595579, 37.605757\n"
-            "Stop Prazhskaya: 55.611678, 37.603831\n"
+            "Stop Prazhskaya: -55.611678, 37.603831\n"
             "6\n"
             "Bus 256\n"
             "Bus 750\n"

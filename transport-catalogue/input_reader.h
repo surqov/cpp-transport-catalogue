@@ -23,8 +23,10 @@ std::vector<std::string_view> SplitIntoWords(const std::string_view& input) {
     int64_t pos = value.find_first_not_of(" ");
     const int64_t pos_end = value.npos;
     
+    std::string separator_chars = result[0] == "Bus"s ? ">-"s : ","s;
+
     while (pos != pos_end) {
-      int64_t separator_pos = value.find_first_of(">,-", pos);
+      int64_t separator_pos = value.find_first_of(separator_chars, pos);
       std::string_view name_ = separator_pos == pos_end ? value.substr(pos + 1)  : value.substr(pos, separator_pos - pos);
       result.push_back(name_.substr(name_.find_first_not_of(' '), name_.find_last_not_of(' ') - name_.find_first_not_of(' ') + 1));
       pos = value.find_first_not_of(">,-", separator_pos);
