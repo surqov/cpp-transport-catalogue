@@ -1,9 +1,8 @@
 #pragma once
-#define _USE_MATH_DEFINES
+
 #include <cmath>
-
 namespace geo {
-
+    
 struct Coordinates {
     double lat;
     double lng;
@@ -11,6 +10,6 @@ struct Coordinates {
     bool operator!=(const Coordinates& other) const;
 };
 
-double ComputeDistance(Coordinates from, Coordinates to);
+inline double ComputeDistance(Coordinates from, Coordinates to);
 
 }
