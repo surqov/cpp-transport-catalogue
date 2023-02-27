@@ -12,6 +12,8 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include <functional>
+
 
 using namespace std::literals;
 
