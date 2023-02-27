@@ -19,13 +19,13 @@ std::ostream& operator<<(std::ostream& os, catalogue::BusInfo info_);
 
 std::ostream& operator<<(std::ostream& os, catalogue::StopInfo info_);
 
-template <class IStream>
+template <class IStream, class OStream>
 class stat_reader {
   private: 
     std::vector<std::string> raw_queries;
 
   public:
-    stat_reader(IStream& input, catalogue::transport_catalogue& catalog) {
+    stat_reader(IStream& input, catalogue::transport_catalogue& catalog, OStream& output) {
       int num_of_lines;
       std::string line;
       std::getline(input, line);
@@ -36,9 +36,9 @@ class stat_reader {
         raw_queries.push_back(line);
         std::string name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
         if (input_reader::GetQueryTypeFromLine(line) == catalogue::QueryType::NewBus) {
-          std::cout << catalog.GetBusInfo(name_) << std::endl;
+          output << catalog.GetBusInfo(name_) << "\n";
         } else {
-          std::cout << catalog.GetStopInfo(name_) << std::endl;
+          output << catalog.GetStopInfo(name_) << "\n";
         }
       }
     }
