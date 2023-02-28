@@ -25,6 +25,7 @@ class reader {
     std::vector<std::string> raw_queries;
     std::vector<catalogue::Query> queries;
     std::unordered_map<std::string_view, catalogue::Stop*> stops_map;
+    std::unordered_map<std::string_view, catalogue::Bus*> buses_map;
 
   public:
     reader (IStream& input) {
