@@ -14,6 +14,8 @@
 #include <algorithm>
 #include <unordered_set>
 
+const double ACCURACY = 1e-6;
+
 using namespace std::literals;
 
 namespace catalogue {

@@ -2,7 +2,7 @@
 #include "input_reader.h"
 #include "stat_reader.h"
 #include "log_duration.h"
-//#include "test_functions.h"
+#include "test_functions.h"
 
 #include <fstream>
 #include <iostream>
@@ -10,6 +10,7 @@
 using namespace std::literals;
 
 int main() {
+    TestTransportCatalogue();
     {
         //std::fstream in("assert_files_curvature/yandex.txt"s);
 
