@@ -2,6 +2,7 @@
 #include "input_reader.h"
 #include "stat_reader.h"
 #include "log_duration.h"
+//#include "test_functions.h"
 
 #include <fstream>
 #include <iostream>
@@ -12,11 +13,11 @@ int main() {
     {
         std::istream &in(std::cin);
         std::ostream &out(std::cout);
+        catalogue::transport_catalogue catalogue;
 
         LOG_DURATION("Time");
-        input_reader::reader<decltype(in)> queries(in);
-        catalogue::transport_catalogue catalogue(queries.GetQueries());
-        stat::stat_reader<decltype(in), decltype(out)> output(in, catalogue, out);
+        input_reader::reader<decltype(in)> queries(in, catalogue);
+        stat::stat_reader<decltype(out)> output(catalogue, out);
     }
     return 0;
 }

@@ -19,13 +19,13 @@ std::ostream& operator<<(std::ostream& os, catalogue::BusInfo info_);
 
 std::ostream& operator<<(std::ostream& os, catalogue::StopInfo info_);
 
-template <class IStream, class OStream>
+template <class OStream>
 class stat_reader {
   private: 
     std::vector<std::string> raw_queries;
 
   public:
-    stat_reader(IStream& input, catalogue::transport_catalogue& catalog, OStream& output) {
+    stat_reader(catalogue::transport_catalogue& catalog, OStream& output) {
       int num_of_lines;
       std::string line;
       std::getline(input, line);

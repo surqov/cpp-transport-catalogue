@@ -12,6 +12,7 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include <unordered_set>
 
 using namespace std::literals;
 
@@ -40,7 +41,7 @@ struct Query {
 
 struct BusInfo {
     std::string_view busname;
-    bool founded = false;
+    bool found = false;
     int stops_on_route = 0;
     int unique_stops = 0;
     double route_len = 0.0;
@@ -49,26 +50,39 @@ struct BusInfo {
 
 struct StopInfo {
     std::string_view stopname;
-    bool founded = false;
-    std::set<std::string_view> buses_to_stop;
+    bool found = false;
+    std::unordered_set<std::string_view> buses_to_stop; // может unordered?
 };
 
 struct StopPairHasher {
     size_t operator()(const std::pair<Stop*, Stop*>& stop) const;
 };
 
+struct BusHasher {
+    size_t operator()(const Bus* bus) const;
+};
+
 class transport_catalogue {
   private:
-    std::deque<Stop> stops;
-    std::deque<Bus> buses;
+    std::deque<Stop> stops; 
+    std::deque<Bus> buses; 
     std::unordered_map<std::string_view, Stop*> stopname_to_stop;
-    std::unordered_map<std::string_view, Bus*> busname_to_bus;
-    std::unordered_map<std::string_view, std::set<Bus*>> stops_to_bus;
-    std::unordered_map<std::string_view, std::set<std::string_view>> stopname_to_busname;
+    std::unordered_map<std::string_view, Bus*> busname_to_bus; 
+    std::unordered_map<std::string_view, std::unordered_set<std::string_view>> stopname_to_busesnames;
+    std::unordered_map<Stop*, std::unordered_set<Bus*, BusHasher>> stop_to_buses;
     std::unordered_map<std::pair<Stop*, Stop*>, double, StopPairHasher> distances;
+    std::unordered_map<Bus*, double, BusHasher> bus_routes_geo;
+    std::unordered_map<Bus*, double, BusHasher> bus_routes_fact;
     
   public:
-    transport_catalogue(std::vector<Query>& queries);
+    transport_catalogue() = default;
+
+    void AddBus(Bus&& bus);
+    void AddStop(Stop&& stop);
+
+    bool FindBus(const std::string_view& bus_name) const noexcept;
+    bool FindStop(const std::string_view& stop_name) const noexcept;
+
     BusInfo GetBusInfo(const std::string_view& bus_name) const;
     StopInfo GetStopInfo(const std::string_view& stop_name) const;
 };
