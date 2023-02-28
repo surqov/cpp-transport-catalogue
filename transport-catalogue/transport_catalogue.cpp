@@ -48,7 +48,7 @@ catalogue::BusInfo catalogue::transport_catalogue::GetBusInfo(const std::string_
         info_.stops_on_route = busname_to_bus.at(bus_name)->stops.size();
         info_.unique_stops = std::set(busname_to_bus.at(bus_name)->stops.begin(), busname_to_bus.at(bus_name)->stops.end()).size();
         const double fact_len = bus_routes_fact.at(busname_to_bus.at(bus_name));
-        const double geo_len = bus_routes_geo.as(busname_to_bus.at(bus_name));
+        const double geo_len = bus_routes_geo.at(busname_to_bus.at(bus_name));
         info_.curvature = fact_len / geo_len;
         info_.route_len = fact_len;
         }

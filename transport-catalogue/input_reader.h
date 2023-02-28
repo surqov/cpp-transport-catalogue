@@ -9,6 +9,7 @@
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>
+#include <iterator>
 
 using namespace std::literals;
 
@@ -33,7 +34,7 @@ class reader {
       std::string line;
       std::getline(input, line);
       num_of_lines = std::stoi(line); // кол-во линий для записи в БД
-      raw_queries.reserve(num_of_lines);
+      raw_in_queries.reserve(num_of_lines);
 
       std::vector<std::string> bus_req;
       bus_req.reserve(num_of_lines);
@@ -56,9 +57,9 @@ class reader {
       // прочитаем какие запросы у нас есть для вывода сразу, чтобы правильно построить каталог
       std::getline(input, line);
       num_of_lines = std::stoi(line); 
-      raw_queries.reserve(num_of_lines);
+      raw_out_queries.reserve(num_of_lines);
       for (int i = 0; i < num_of_lines; ++i) {
-        std::string_view name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
+        std::string name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
         if (GetQueryTypeFromLine(line) == catalogue::QueryType::NewBus) {
           CalcRouteLen(catalogue, name_);
         }
@@ -97,18 +98,19 @@ class reader {
       double geo_len = 0.0;
       double fact_len = 0.0;
 
-      for (const auto& [lhs, rhs] : catalogue.busname_to_bus.at(bus_name)->stops) {
+      for (const auto* lhs : catalogue.busname_to_bus.at(bus_name)->stops) {
+        const auto* rhs = std::next(lhs);
         geo_len += geo::ComputeDistance(lhs->coordinates, rhs->coordinates);
 
-        Stop* lhs_stop = catalogue.stopname_to_stop.at(lhs->name);
-        Stop* rhs_stop = catalogue.stopname_to_stop.at(rhs->name);
+        catalogue::Stop* lhs_stop = catalogue.stopname_to_stop.at(lhs->name);
+        catalogue::Stop* rhs_stop = catalogue.stopname_to_stop.at(rhs->name);
         fact_len += catalogue.distances.find({lhs_stop, rhs_stop}) != catalogue.distances.end() ? 
                         catalogue.distances.at({lhs_stop, rhs_stop}) : 
                         catalogue.distances.at({rhs_stop, lhs_stop});
       }
 
-      catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), geo_length});
-      catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), fact_length});
+      catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), geo_len});
+      catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), fact_len});
     }
 
     std::vector<std::string>& GetRawOutQueries() {

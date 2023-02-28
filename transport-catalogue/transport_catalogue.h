@@ -63,7 +63,7 @@ struct BusHasher {
 };
 
 class transport_catalogue {
-  private:
+   public:
     std::deque<Stop> stops; 
     std::deque<Bus> buses; 
     std::unordered_map<std::string_view, Stop*> stopname_to_stop;
@@ -74,7 +74,6 @@ class transport_catalogue {
     std::unordered_map<Bus*, double, BusHasher> bus_routes_geo;
     std::unordered_map<Bus*, double, BusHasher> bus_routes_fact;
     
-  public:
     transport_catalogue() = default;
 
     void AddBus(Bus&& bus);

@@ -11,13 +11,14 @@ using namespace std::literals;
 
 int main() {
     {
-        std::istream &in(std::cin);
+        //std::istream &in(std::cin);
+        std::fstream in("assert_files_curvature/tsC_case1_input.txt"s);
         std::ostream &out(std::cout);
         catalogue::transport_catalogue catalogue;
 
         LOG_DURATION("Time");
         input_reader::reader<decltype(in)> queries(in, catalogue);
-        stat::stat_reader<decltype(out)> output(catalogue, out);
+        stat::stat_reader<decltype(out)> output(queries.GetRawOutQueries(), catalogue, out);
     }
     return 0;
 }

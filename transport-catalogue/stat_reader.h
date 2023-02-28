@@ -25,15 +25,8 @@ class stat_reader {
     std::vector<std::string> raw_queries;
 
   public:
-    stat_reader(catalogue::transport_catalogue& catalog, OStream& output) {
-      int num_of_lines;
-      std::string line;
-      std::getline(input, line);
-      num_of_lines = std::stoi(line);
-      raw_queries.reserve(num_of_lines);
-      for (int i = 0; i < num_of_lines; ++i) {
-        std::getline(input, line);
-        raw_queries.push_back(line);
+    stat_reader(const std::vector<std::string>& queries, catalogue::transport_catalogue& catalog, OStream& output) {
+      for (const auto& line : queries) {
         std::string name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
         if (input_reader::GetQueryTypeFromLine(line) == catalogue::QueryType::NewBus) {
           output << catalog.GetBusInfo(name_) << "\n";
