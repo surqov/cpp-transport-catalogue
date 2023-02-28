@@ -33,11 +33,19 @@ void catalogue::transport_catalogue::AddStop(Stop&& stop) {
 }
 
 bool catalogue::transport_catalogue::FindBus(const std::string_view& bus_name) const noexcept {
-    return busname_to_bus.find(bus_name) != busname_to_bus.end();
+    try {
+        return busname_to_bus.find(bus_name) != busname_to_bus.end();
+    } catch (...) {
+        return false;
+    }
 }
 
 bool catalogue::transport_catalogue::FindStop(const std::string_view& stop_name) const noexcept {
-    return stopname_to_stop.find(stop_name) != stopname_to_stop.end();
+    try {
+        return stopname_to_stop.find(stop_name) != stopname_to_stop.end();
+    } catch (...) {
+        return false;
+    }
 }
 
 catalogue::BusInfo catalogue::transport_catalogue::GetBusInfo(const std::string_view& bus_name) const {

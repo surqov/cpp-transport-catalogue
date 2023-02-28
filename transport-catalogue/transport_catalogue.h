@@ -51,7 +51,7 @@ struct BusInfo {
 struct StopInfo {
     std::string_view stopname;
     bool found = false;
-    std::unordered_set<std::string_view> buses_to_stop; // может unordered?
+    std::set<std::string_view> buses_to_stop; //не unordered т.к. сортируем вывод лексиграфически
 };
 
 struct StopPairHasher {
@@ -68,7 +68,7 @@ class transport_catalogue {
     std::deque<Bus> buses; 
     std::unordered_map<std::string_view, Stop*> stopname_to_stop;
     std::unordered_map<std::string_view, Bus*> busname_to_bus; 
-    std::unordered_map<std::string_view, std::unordered_set<std::string_view>> stopname_to_busesnames;
+    std::unordered_map<std::string_view, std::set<std::string_view>> stopname_to_busesnames;
     std::unordered_map<Stop*, std::unordered_set<Bus*, BusHasher>> stop_to_buses;
     std::unordered_map<std::pair<Stop*, Stop*>, double, StopPairHasher> distances;
     std::unordered_map<Bus*, double, BusHasher> bus_routes_geo;

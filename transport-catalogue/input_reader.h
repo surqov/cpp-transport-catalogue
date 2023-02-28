@@ -59,8 +59,9 @@ class reader {
       num_of_lines = std::stoi(line); 
       raw_out_queries.reserve(num_of_lines);
       for (int i = 0; i < num_of_lines; ++i) {
+        std::getline(input, line);
         std::string name_ = line.substr(line.find_first_of(' ') + 1, line.find_last_not_of(' ') - line.find_first_of(' '));
-        if (GetQueryTypeFromLine(line) == catalogue::QueryType::NewBus) {
+        if (GetQueryTypeFromLine(line) == catalogue::QueryType::NewBus && catalogue.FindBus(name_)) {
           CalcRouteLen(catalogue, name_);
         }
         raw_out_queries.push_back(std::move(line));
@@ -96,21 +97,24 @@ class reader {
     //добавляем длины маршрутов по их географическим координатам и по фактическим длинам
     void CalcRouteLen(catalogue::transport_catalogue& catalogue, const std::string_view& bus_name) {
       double geo_len = 0.0;
-      double fact_len = 0.0;
+      double fact_len = 
+        std::transform_reduce(catalogue.busname_to_bus.at(bus_name)->stops.begin(),
+          catalogue.busname_to_bus.at(bus_name)->stops.end() - 1,
+          catalogue.busname_to_bus.at(bus_name)->stops.begin() + 1,
+          0.0,
+          std::plus<double>(),
+          [&geo_len, &catalogue] (const auto& lhs, const auto& rhs) {
+            geo_len += geo::ComputeDistance(lhs->coordinates, rhs->coordinates);
 
-      for (const auto* lhs : catalogue.busname_to_bus.at(bus_name)->stops) {
-        const auto* rhs = std::next(lhs);
-        geo_len += geo::ComputeDistance(lhs->coordinates, rhs->coordinates);
-
-        catalogue::Stop* lhs_stop = catalogue.stopname_to_stop.at(lhs->name);
-        catalogue::Stop* rhs_stop = catalogue.stopname_to_stop.at(rhs->name);
-        fact_len += catalogue.distances.find({lhs_stop, rhs_stop}) != catalogue.distances.end() ? 
-                        catalogue.distances.at({lhs_stop, rhs_stop}) : 
-                        catalogue.distances.at({rhs_stop, lhs_stop});
-      }
+            catalogue::Stop* lhs_stop = catalogue.stopname_to_stop.at(lhs->name);
+            catalogue::Stop* rhs_stop = catalogue.stopname_to_stop.at(rhs->name);
+            return catalogue.distances.find({lhs_stop, rhs_stop}) != catalogue.distances.end() ? 
+                            catalogue.distances.at({lhs_stop, rhs_stop}) : 
+                            catalogue.distances.at({rhs_stop, lhs_stop});
+      });
 
       catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), geo_len});
-      catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), fact_len});
+      catalogue.bus_routes_fact.insert({catalogue.busname_to_bus.at(bus_name), fact_len});
     }
 
     std::vector<std::string>& GetRawOutQueries() {
