@@ -65,7 +65,6 @@ struct BusHasher {
 };
 
 class transport_catalogue {
-    //завернуть все поля класса в приват и добавить безопасные геттеры сеттеры !!!!
    public:
     std::deque<Stop> stops; 
     std::deque<Bus> buses; 

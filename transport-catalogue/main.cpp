@@ -21,6 +21,10 @@ int main() {
         LOG_DURATION("Time");
         input_reader::reader<decltype(in)> queries(in, catalogue);
         stat::stat_reader<decltype(out)> output(queries.GetRawOutQueries(), catalogue, out);
+
+        ////завернуть все поля класса catalogue в приват и добавить безопасные геттеры сеттеры !!!!
+        ///добавить функцию Load - единая точка входа для считывания запросов
+        //сделать конструктор для stat не по string а по reader
     }
     return 0;
 }
