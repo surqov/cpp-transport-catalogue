@@ -22,7 +22,7 @@ std::ostream& operator<<(std::ostream& os, catalogue::StopInfo info_);
 template <class OStream>
 class stat_reader {
   private: 
-    std::vector<std::string> raw_queries;
+    std::vector<std::string> raw_queries; // где используется?
 
   public:
     stat_reader(const std::vector<std::string>& queries, catalogue::transport_catalogue& catalog, OStream& output) {

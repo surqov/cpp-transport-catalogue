@@ -7,6 +7,7 @@
 #include <string>
 #include <random>
 #include <execution>
+#include <sstream>
 
 #include "input_reader.h"
 #include "geo.h"
@@ -21,26 +22,75 @@ void TestGeoDistanceCompute(){
     catalogue::Stop stop1 = {
         "Tolstopaltsevo"sv, 
         {55.611087, 37.20829},
-        {
-            {"Marushkino"sv, 3900}
-        }
+        { {"Marushkino"sv, 3900} }
     };
-
     catalogue::Stop stop2 = {
         "Tolstopaltsevo"sv, 
         {55.595884, 37.209755},
         {}
     };
-
     ASSERT(geo::ComputeDistance(stop1.coordinates, stop2.coordinates) - 1693.0 < ACCURACY);
 }
 
-//Тест проверяет разбиение слов
+//Тест проверяет разбиение слов и форматирование при симметричных и несимметричных записях маршрутов
+void TestTextInputWordsSplit() {
+    std::string_view line1 = "Bus 752 b: stop1 > stop2 > stop3 > stop4 > stop1"sv;
+    std::vector<std::string_view> line1_vec = {"Bus"sv, "752 b"sv, "stop1"sv, "stop2"sv, "stop3"sv, "stop4"sv, "stop1"sv};
+    std::string_view line2 = "Bus 45q symmetry: stop1 - stop2 - stop3"sv;
+    std::vector<std::string_view> line2_vec = {"Bus"sv, "45q symmetry"sv, "stop1"sv, "stop2"sv, "stop3"sv, "stop2"sv, "stop1"sv};
+    std::string_view line3 = "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino"sv;
+    std::vector<std::string_view> line3_vec = {"Stop"sv, "Tolstopaltsevo"sv, "55.611087"sv, "37.20829"sv, "3900m to Marushkino"sv};
 
+    ASSERT_EQUAL(input_reader::SplitIntoWords(line1), line1_vec);
+    ASSERT_EQUAL(input_reader::SplitIntoWords(line2), line2_vec);
+    ASSERT_EQUAL(input_reader::SplitIntoWords(line3), line3_vec);
+}
 
 //Тест проверяет правильность определения типа запроса по строке
+void TestQueryTypeFromLineGetter(){
+    std::string_view line1 = "Bus 752 b: stop1 > stop2 > stop3 > stop4 > stop1"sv;
+    std::string_view line2 = "Bus 45q symmetry: stop1 - stop2 - stop3"sv;
+    std::string_view line3 = "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino"sv;
+
+    ASSERT(input_reader::GetQueryTypeFromLine(line1) == catalogue::QueryType::NewBus);
+    ASSERT(input_reader::GetQueryTypeFromLine(line2) == catalogue::QueryType::NewBus);
+    ASSERT(input_reader::GetQueryTypeFromLine(line3) == catalogue::QueryType::NewStop)
+}
+
 //Тест проверяет работу парсинга строки в запрос Query
-//Тест проверяет добавление автобуса
+//void TestQueryParsingFromString() {
+    //std::string_view line1 = "Bus 752 b: stop1 > stop2 > stop3 > stop4 > stop1"sv;
+    //std::string_view line2 = "Bus 45q symmetry: stop1 - stop2 - stop3"sv;
+    //std::string_view line3 = "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino"sv;
+//}
+
+//Тест проверяет конструктор каталога из IO
+//void TestCatalogueConstructorFromIStream(){
+
+//}
+
+//Тест проверяет добавление маршрута
+void TestBusAdding() {
+    catalogue::transport_catalogue catalog;
+    catalogue::Stop stop1 = {
+        "Tolstopaltsevo"sv, 
+        {55.611087, 37.20829},
+        { {"Marushkino"sv, 3900} }
+    };
+    catalogue::Stop stop2 = {
+        "Tolstopaltsevo"sv, 
+        {55.595884, 37.209755},
+        {}
+    };
+    catalogue::Bus bus = {
+        "45q symmetry"sv,
+        {&stop1, &stop2}
+    };
+    ASSERT_EQUAL(catalog.FindBus(bus.name), false);
+    catalog.AddBus(std::move(bus));
+    ASSERT_EQUAL(catalog.FindBus(bus.name), true);
+}
+
 //Тест проверяет добавление остановки
 //Тест проверяет вывод по автобусу
 //Тест проверяет вывод по остановке
@@ -48,6 +98,11 @@ void TestGeoDistanceCompute(){
 void TestTransportCatalogue() {
     TestRunner tr;
     RUN_TEST(tr, TestGeoDistanceCompute);
+    RUN_TEST(tr, TestTextInputWordsSplit);
+    RUN_TEST(tr, TestQueryTypeFromLineGetter);
+    //RUN_TEST(tr, TestQueryParsingFromString);
+    //RUN_TEST(tr, TestCatalogueConstructorFromIStream);
+    RUN_TEST(tr, TestBusAdding);
 }
 
 /*

@@ -12,9 +12,9 @@ using namespace std::literals;
 int main() {
     TestTransportCatalogue();
     {
-        //std::fstream in("assert_files_curvature/yandex.txt"s);
+        std::fstream in("assert_files_curvature/tsC_case1_input.txt"s);
 
-        std::istream &in(std::cin);
+        //std::istream &in(std::cin);
         std::ostream &out(std::cout);
         catalogue::transport_catalogue catalogue;
 
