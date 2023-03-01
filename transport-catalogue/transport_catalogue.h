@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <unordered_set>
 
-const double ACCURACY = 1e-6;
+const double ACCURACY = 1e-5;
 
 using namespace std::literals;
 
@@ -65,6 +65,7 @@ struct BusHasher {
 };
 
 class transport_catalogue {
+    //завернуть все поля класса в приват и добавить безопасные геттеры сеттеры !!!!
    public:
     std::deque<Stop> stops; 
     std::deque<Bus> buses; 

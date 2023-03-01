@@ -69,6 +69,7 @@
         "vector": "cpp",
         "algorithm": "cpp",
         "unordered_set": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "any": "cpp"
     }
 }

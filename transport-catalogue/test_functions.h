@@ -8,6 +8,7 @@
 #include <random>
 #include <execution>
 #include <sstream>
+#include <cmath>
 
 #include "input_reader.h"
 #include "geo.h"
@@ -58,27 +59,59 @@ void TestQueryTypeFromLineGetter(){
 }
 
 //Тест проверяет работу парсинга строки в запрос Query
-//void TestQueryParsingFromString() {
+void TestQueryParsingFromString() {
     //std::string_view line1 = "Bus 752 b: stop1 > stop2 > stop3 > stop4 > stop1"sv;
     //std::string_view line2 = "Bus 45q symmetry: stop1 - stop2 - stop3"sv;
     //std::string_view line3 = "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino"sv;
-//}
+}
 
-//Тест проверяет конструктор каталога из IO
-//void TestCatalogueConstructorFromIStream(){
+//Тест проверяет конструктор каталога из reader
+void TestCatalogueConstructorFromReadedIStream(){
+    std::stringstream input {
+        "13\n"s
+        "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino\n"s 
+        "Stop Marushkino: 55.595884, 37.209755, 9900m to Rasskazovka, 100m to Marushkino\n"s 
+        "Bus 256: Biryulyovo Zapadnoye > Biryusinka > Universam > Biryulyovo Tovarnaya > Biryulyovo Passazhirskaya > Biryulyovo Zapadnoye\n"s
+        "Bus 750: Tolstopaltsevo - Marushkino - Marushkino - Rasskazovka\n"s 
+        "Stop Rasskazovka: 55.632761, 37.333324, 9500m to Marushkino\n"s 
+        "Stop Biryulyovo Zapadnoye: 55.574371, 37.6517, 7500m to Rossoshanskaya ulitsa, 1800m to Biryusinka, 2400m to Universam\n"s 
+        "Stop Biryusinka: 55.581065, 37.64839, 750m to Universam\n"s 
+        "Stop Universam: 55.587655, 37.645687, 5600m to Rossoshanskaya ulitsa, 900m to Biryulyovo Tovarnaya\n"s 
+        "Stop Biryulyovo Tovarnaya: 55.592028, 37.653656, 1300m to Biryulyovo Passazhirskaya\n"s  
+        "Stop Biryulyovo Passazhirskaya: 55.580999, 37.659164, 1200m to Biryulyovo Zapadnoye\n"s 
+        "Bus 828: Biryulyovo Zapadnoye > Universam > Rossoshanskaya ulitsa > Biryulyovo Zapadnoye\n"s 
+        "Stop Rossoshanskaya ulitsa: 55.595579, 37.605757\n"s 
+        "Stop Prazhskaya: 55.611678, 37.603831\n"s 
+        "6\n"s 
+        "Bus 256\n"s 
+        "Bus 750\n"s 
+        "Bus 751\n"s 
+        "Stop Samara\n"s 
+        "Stop Prazhskaya\n"s 
+        "Stop Biryulyovo Zapadnoye\n"s
+    };
+    catalogue::transport_catalogue catalogue;
+    input_reader::reader<std::stringstream> queries(input, catalogue);
 
-//}
+    ASSERT_EQUAL(catalogue.FindBus("256"sv), true);
+    ASSERT_EQUAL(catalogue.FindBus("750"sv), true);
+    ASSERT_EQUAL(catalogue.FindBus("828"sv), true);
+    ASSERT_EQUAL(catalogue.FindBus("751"sv), false);
+
+    ASSERT_EQUAL(catalogue.FindStop("Tolstopaltsevo"sv), true);
+    ASSERT_EQUAL(catalogue.FindStop("Prazhskaya"sv), true);
+}
 
 //Тест проверяет добавление маршрута
 void TestBusAdding() {
-    catalogue::transport_catalogue catalog;
+    catalogue::transport_catalogue catalogue;
     catalogue::Stop stop1 = {
         "Tolstopaltsevo"sv, 
         {55.611087, 37.20829},
         { {"Marushkino"sv, 3900} }
     };
     catalogue::Stop stop2 = {
-        "Tolstopaltsevo"sv, 
+        "Marushkino"sv, 
         {55.595884, 37.209755},
         {}
     };
@@ -86,23 +119,115 @@ void TestBusAdding() {
         "45q symmetry"sv,
         {&stop1, &stop2}
     };
-    ASSERT_EQUAL(catalog.FindBus(bus.name), false);
-    catalog.AddBus(std::move(bus));
-    ASSERT_EQUAL(catalog.FindBus(bus.name), true);
+    ASSERT_EQUAL(catalogue.FindBus(bus.name), false);
+    catalogue.AddBus(std::move(bus));
+    ASSERT_EQUAL(catalogue.FindBus(bus.name), true);
 }
 
 //Тест проверяет добавление остановки
+void TestStopAdding(){
+    catalogue::transport_catalogue catalogue;
+    catalogue::Stop stop1 = {
+        "Tolstopaltsevo"sv, 
+        {55.611087, 37.20829},
+        { {"Marushkino"sv, 3900} }
+    };
+    catalogue::Stop stop2 = {
+        "Marushkino"sv, 
+        {55.595884, 37.209755},
+        {}
+    };
+    catalogue::Bus bus = {
+        "45q symmetry"sv,
+        {&stop1, &stop2}
+    };
+    
+    ASSERT_EQUAL(catalogue.FindStop(stop1.name), false);
+    ASSERT_EQUAL(catalogue.FindStop(stop2.name), false);
+    catalogue.AddStop(std::move(stop1));
+    catalogue.AddStop(std::move(stop2));
+    ASSERT_EQUAL(catalogue.FindStop(stop1.name), true);
+    ASSERT_EQUAL(catalogue.FindStop(stop2.name), true); 
+}
+
+//Тест проверяет расчет фактической длины маршрута
+void TestFactRouteLenCalc(){
+    std::stringstream input {
+        "13\n"s
+        "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino\n"s 
+        "Stop Marushkino: 55.595884, 37.209755, 9900m to Rasskazovka, 100m to Marushkino\n"s 
+        "Bus 256: Biryulyovo Zapadnoye > Biryusinka > Universam > Biryulyovo Tovarnaya > Biryulyovo Passazhirskaya > Biryulyovo Zapadnoye\n"s
+        "Bus 750: Tolstopaltsevo - Marushkino - Marushkino - Rasskazovka\n"s 
+        "Stop Rasskazovka: 55.632761, 37.333324, 9500m to Marushkino\n"s 
+        "Stop Biryulyovo Zapadnoye: 55.574371, 37.6517, 7500m to Rossoshanskaya ulitsa, 1800m to Biryusinka, 2400m to Universam\n"s 
+        "Stop Biryusinka: 55.581065, 37.64839, 750m to Universam\n"s 
+        "Stop Universam: 55.587655, 37.645687, 5600m to Rossoshanskaya ulitsa, 900m to Biryulyovo Tovarnaya\n"s 
+        "Stop Biryulyovo Tovarnaya: 55.592028, 37.653656, 1300m to Biryulyovo Passazhirskaya\n"s  
+        "Stop Biryulyovo Passazhirskaya: 55.580999, 37.659164, 1200m to Biryulyovo Zapadnoye\n"s 
+        "Bus 828: Biryulyovo Zapadnoye > Universam > Rossoshanskaya ulitsa > Biryulyovo Zapadnoye\n"s 
+        "Stop Rossoshanskaya ulitsa: 55.595579, 37.605757\n"s 
+        "Stop Prazhskaya: 55.611678, 37.603831\n"s 
+        "6\n"s 
+        "Bus 256\n"s 
+        "Bus 750\n"s 
+        "Bus 751\n"s 
+        "Stop Samara\n"s 
+        "Stop Prazhskaya\n"s 
+        "Stop Biryulyovo Zapadnoye\n"s
+    };
+    catalogue::transport_catalogue catalogue;
+    input_reader::reader<std::stringstream> queries(input, catalogue);
+    ASSERT(std::abs(catalogue.GetBusInfo("256"sv).route_len - 5950) < ACCURACY);
+    ASSERT(std::abs(catalogue.GetBusInfo("750"sv).route_len - 27400) < ACCURACY);
+}
+
+//Тест проверяет правильность расчета искажения географического маршрута относительно фактического
+void TestCurvatureCalc(){
+    std::stringstream input {
+        "13\n"s
+        "Stop Tolstopaltsevo: 55.611087, 37.20829, 3900m to Marushkino\n"s 
+        "Stop Marushkino: 55.595884, 37.209755, 9900m to Rasskazovka, 100m to Marushkino\n"s 
+        "Bus 256: Biryulyovo Zapadnoye > Biryusinka > Universam > Biryulyovo Tovarnaya > Biryulyovo Passazhirskaya > Biryulyovo Zapadnoye\n"s
+        "Bus 750: Tolstopaltsevo - Marushkino - Marushkino - Rasskazovka\n"s 
+        "Stop Rasskazovka: 55.632761, 37.333324, 9500m to Marushkino\n"s 
+        "Stop Biryulyovo Zapadnoye: 55.574371, 37.6517, 7500m to Rossoshanskaya ulitsa, 1800m to Biryusinka, 2400m to Universam\n"s 
+        "Stop Biryusinka: 55.581065, 37.64839, 750m to Universam\n"s 
+        "Stop Universam: 55.587655, 37.645687, 5600m to Rossoshanskaya ulitsa, 900m to Biryulyovo Tovarnaya\n"s 
+        "Stop Biryulyovo Tovarnaya: 55.592028, 37.653656, 1300m to Biryulyovo Passazhirskaya\n"s  
+        "Stop Biryulyovo Passazhirskaya: 55.580999, 37.659164, 1200m to Biryulyovo Zapadnoye\n"s 
+        "Bus 828: Biryulyovo Zapadnoye > Universam > Rossoshanskaya ulitsa > Biryulyovo Zapadnoye\n"s 
+        "Stop Rossoshanskaya ulitsa: 55.595579, 37.605757\n"s 
+        "Stop Prazhskaya: 55.611678, 37.603831\n"s 
+        "6\n"s 
+        "Bus 256\n"s 
+        "Bus 750\n"s 
+        "Bus 751\n"s 
+        "Stop Samara\n"s 
+        "Stop Prazhskaya\n"s 
+        "Stop Biryulyovo Zapadnoye\n"s
+    };
+    catalogue::transport_catalogue catalogue;
+    input_reader::reader<std::stringstream> queries(input, catalogue);
+    ASSERT(std::abs(catalogue.GetBusInfo("256"sv).curvature - 1.36124) < ACCURACY);
+    ASSERT(std::abs(catalogue.GetBusInfo("750"sv).curvature - 1.30853) < ACCURACY);   
+}
+
 //Тест проверяет вывод по автобусу
 //Тест проверяет вывод по остановке
+//Тест Bus To Stop
+//Тест Stop To Bus
 
 void TestTransportCatalogue() {
     TestRunner tr;
     RUN_TEST(tr, TestGeoDistanceCompute);
     RUN_TEST(tr, TestTextInputWordsSplit);
     RUN_TEST(tr, TestQueryTypeFromLineGetter);
-    //RUN_TEST(tr, TestQueryParsingFromString);
-    //RUN_TEST(tr, TestCatalogueConstructorFromIStream);
+    RUN_TEST(tr, TestQueryParsingFromString);
+    RUN_TEST(tr, TestCatalogueConstructorFromReadedIStream);
     RUN_TEST(tr, TestBusAdding);
+    RUN_TEST(tr, TestStopAdding);
+    RUN_TEST(tr, TestFactRouteLenCalc);
+    RUN_TEST(tr, TestCurvatureCalc);
 }
 
 /*
