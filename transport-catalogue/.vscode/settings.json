@@ -70,6 +70,8 @@
         "algorithm": "cpp",
         "unordered_set": "cpp",
         "random": "cpp",
-        "any": "cpp"
+        "any": "cpp",
+        "__verbose_abort": "cpp",
+        "bit": "cpp"
     }
 }

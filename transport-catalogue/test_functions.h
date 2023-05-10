@@ -217,6 +217,12 @@ void TestCurvatureCalc(){
 //Тест Bus To Stop
 //Тест Stop To Bus
 
+//Тест чтения JSON
+//Тест преобразования JSON в Query
+//Тест добавления автобусов из JSON
+//Тест добавления остановок из JSON
+//Тест вывода остановок в JSON
+
 void TestTransportCatalogue() {
     TestRunner tr;
     RUN_TEST(tr, TestGeoDistanceCompute);
