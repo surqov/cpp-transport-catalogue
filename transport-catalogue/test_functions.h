@@ -15,6 +15,8 @@
 #include "stat_reader.h"
 #include "transport_catalogue.h"
 #include "test_framework.h"
+#include "json.h"
+#include "json_reader.h"
 
 using namespace std::literals;
 
@@ -218,7 +220,38 @@ void TestCurvatureCalc(){
 //Тест Stop To Bus
 
 //Тест чтения JSON
+void TestJSONLoad() {
+    std::stringstream s;
+    s << "{\"type\":            \"Bus\"," <<
+            "\"name\": " <<
+            "\"14\"," <<
+            "\"id\": 12," <<
+            "                   " <<
+            "\"distance\": 123.45," <<
+            "\"stops\": [" <<
+                "\"Test4you\"," <<
+                "                " <<
+                "\"Электросети\"," <<
+                "\"Улица Докучаева\"," <<
+                "\"Улица Лизы Чайкиной\"" <<
+            "]," <<
+            "\"is_roundtrip\": true" <<
+            "} ";
+
+    std::istream& i = static_cast<std::istream&>(s);
+    json::Document doc_ = json::Load(i);
+
+    ASSERT_EQUAL(doc_.GetRoot().AsMap().at("type"s).AsString(), "Bus"s);
+    ASSERT_EQUAL(static_cast<int>(doc_.GetRoot().AsMap().at("id"s).AsInt()), 12);
+    ASSERT(std::abs(doc_.GetRoot().AsMap().at("distance"s).AsDouble() - 123.45) < ACCURACY);
+    ASSERT_EQUAL(static_cast<int>(doc_.GetRoot().AsMap().at("stops"s).AsArray().size()), 4);
+    ASSERT_EQUAL(doc_.GetRoot().AsMap().at("stops"s).AsArray()[0].AsString(), "Test4you"s);
+    ASSERT_EQUAL(doc_.GetRoot().AsMap().at("is_roundtrip"s).AsBool(), true);
+    
+}
 //Тест преобразования JSON в Query
+
+
 //Тест добавления автобусов из JSON
 //Тест добавления остановок из JSON
 //Тест вывода остановок в JSON
@@ -234,6 +267,7 @@ void TestTransportCatalogue() {
     RUN_TEST(tr, TestStopAdding);
     RUN_TEST(tr, TestFactRouteLenCalc);
     RUN_TEST(tr, TestCurvatureCalc);
+    RUN_TEST(tr, TestJSONLoad);
 }
 
 /*

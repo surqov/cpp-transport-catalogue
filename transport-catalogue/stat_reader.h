@@ -39,9 +39,9 @@ class stat_reader {
     stat_reader(const std::vector<catalogue::Query>& queries, catalogue::transport_catalogue& catalog, OStream& output) {
       for (const catalogue::Query& query_ : queries) {
         if (query_.type == catalogue::QueryType::NewBus) {
-          output << catalog.GetBusInfo(name_) << "\n";
+          output << catalog.GetBusInfo(query_.name) << "\n";
         } else {
-          output << catalog.GetStopInfo(name_) << "\n";
+          output << catalog.GetStopInfo(query_.name) << "\n";
         }
       }
     }

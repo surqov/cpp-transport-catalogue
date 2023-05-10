@@ -30,13 +30,14 @@ int main() {
     }*/
 
     {// читаем json
-        std::istream& in_(std::cin);
-        std::ostream& out_(std::cout);
-        catalogue::transport_catalogue catalogue;
+        //std::istream& in_(std::cin);
+        //std::ostream& out_(std::cout);
+        //catalogue::transport_catalogue catalogue;
 
-        json::Document doc_ = json::Load(in_);
-        json_reader::reader queries(doc_, catalogue);
-        stat::stat_reader<std::ostream&> output(queries.GetRawOutQueries(), catalogue, out_);
+
+        //json::Document doc_ = json::Load(in_);
+        //json_reader::reader queries(doc_, catalogue);
+        //stat::stat_reader<std::ostream&> output(queries.GetRawOutQueries(), catalogue, out_);
     }
     return 0;
 }

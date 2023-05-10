@@ -28,11 +28,12 @@ namespace json_reader {
         result.name = node.AsMap().at("name"s).AsString();
         result.coordinates = { node.AsMap().at("latitude"s).AsDouble(), node.AsMap().at("longitude"s).AsDouble() };
         result.distances.reserve(node.AsMap().at("road_distances"s).AsMap().size());
-        std::for_each(node.AsMap().at("road_distances"s).AsMap().begin(),
-                    node.AsMap().at("road_distances"s).AsMap().end(),
-                    [&result](const std::pair<std::string_view, double>& dist_){ // перебор по node д б
-                        result.distances.push_back(dist_);
-                    });
+
+        for (const auto& [name_, dist_] : node.AsMap().at("road_distances"s).AsMap()) {
+            result.distances.push_back({name_, dist_.AsDouble()});
+        }
+
+        return result;
     }
 
     catalogue::Bus JsonToBus(const json::Node& node, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map) {
@@ -47,6 +48,8 @@ namespace json_reader {
 
         if (node.AsMap().at("is_roundtrip"s).AsBool()) 
             result.stops.insert(result.stops.end(), result.stops.rbegin() + 1, result.stops.rend() - 2);
+        
+        return result;
     }
 
     reader::reader(json::Document& doc, catalogue::transport_catalogue& catalogue) {
@@ -57,9 +60,9 @@ namespace json_reader {
 
         for (const json::Node& req : doc.GetRoot().AsMap().at("base_requests"s).AsArray()) {
             if (GetQueryType(req) == catalogue::QueryType::NewStop) {
-                in_queries.emplace_back(std::move(JsonToStop(req)));
+                in_queries.emplace_back(ParseToQuery(req, catalogue.stopname_to_stop));
             } else {
-                bus_req.emplace_back(std::move(JsonToStop(req)));
+                bus_req.emplace_back(ParseToQuery(req, catalogue.stopname_to_stop));
             }
         }
 
