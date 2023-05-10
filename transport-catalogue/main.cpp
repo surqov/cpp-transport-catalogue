@@ -12,7 +12,7 @@
 using namespace std::literals;
 
 int main() {
-    TestTransportCatalogue();
+    //TestTransportCatalogue();
     /*{ //читаем stat 
         std::fstream in("_tr/assert_files_curvature/yandex.txt"s);
 
@@ -30,14 +30,14 @@ int main() {
     }*/
 
     {// читаем json
-        //std::istream& in_(std::cin);
-        //std::ostream& out_(std::cout);
-        //catalogue::transport_catalogue catalogue;
+        std::fstream in_("input.json"s);
+        std::ostream& out_(std::cout);
+        catalogue::transport_catalogue catalogue;
 
-
-        //json::Document doc_ = json::Load(in_);
-        //json_reader::reader queries(doc_, catalogue);
-        //stat::stat_reader<std::ostream&> output(queries.GetRawOutQueries(), catalogue, out_);
+        std::istream& in__ = static_cast<std::istream&>(in_);
+        json::Document doc_ = json::Load(in__);
+        json_reader::reader queries(doc_, catalogue);
+        stat::stat_reader<std::ostream&> output(queries.GetRawOutQueries(), catalogue, out_);
     }
     return 0;
 }
