@@ -1,5 +1,6 @@
 #include "transport_catalogue.h"
 #include "json_reader.h"
+#include "json.h"
 #include "input_reader.h"
 #include "stat_reader.h"
 #include "log_duration.h"
@@ -29,7 +30,13 @@ int main() {
     }*/
 
     {// читаем json
-        std::fstream in(""s);
+        std::istream& in_(std::cin);
+        std::ostream& out_(std::cout);
+        catalogue::transport_catalogue catalogue;
+
+        json::Document doc_ = json::Load(in_);
+        json_reader::reader queries(doc_, catalogue);
+        stat::stat_reader<std::ostream&> output(queries.GetRawOutQueries(), catalogue, out_);
     }
     return 0;
 }

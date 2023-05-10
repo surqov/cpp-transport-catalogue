@@ -49,7 +49,87 @@ namespace json_reader {
             result.stops.insert(result.stops.end(), result.stops.rbegin() + 1, result.stops.rend() - 2);
     }
 
+    reader::reader(json::Document& doc, catalogue::transport_catalogue& catalogue) {
+        std::vector<catalogue::Query> bus_req;
+        in_queries.reserve(doc.GetRoot().AsMap().at("base_requests"s).AsArray().size());
+        bus_req.reserve(doc.GetRoot().AsMap().at("base_requests"s).AsArray().size());
+        out_queries.reserve(doc.GetRoot().AsMap().at("stat_requests"s).AsArray().size());
+
+        for (const json::Node& req : doc.GetRoot().AsMap().at("base_requests"s).AsArray()) {
+            if (GetQueryType(req) == catalogue::QueryType::NewStop) {
+                in_queries.emplace_back(std::move(JsonToStop(req)));
+            } else {
+                bus_req.emplace_back(std::move(JsonToStop(req)));
+            }
+        }
+
+        std::move(bus_req.begin(), bus_req.end(), std::back_inserter(in_queries));
+
+        FillCatalogue(catalogue);
+        CalcPairDistances(catalogue);
+
+        for (const json::Node& node_ : doc.GetRoot().AsMap().at("stat_requests"s).AsArray()) {
+            catalogue::Query out_query;
+            out_query.id = node_.AsMap().at("id"s).AsInt();
+            out_query.name = node_.AsMap().at("name"s).AsString();
+            out_query.type = GetQueryType(node_);
+            if ((out_query.type == catalogue::QueryType::NewBus) && catalogue.FindBus(out_query.name)) {
+                CalcRouteLen(catalogue, out_query.name);
+            }
+            out_queries.push_back(std::move(out_query));
+      }
 
 
 
+    }
+
+    void reader::FillCatalogue(catalogue::transport_catalogue& catalogue) {
+      for (catalogue::Query& query_ : in_queries) {
+        if (query_.type == catalogue::QueryType::NewStop) {
+          catalogue.AddStop(std::move(query_.stop));
+        } else {
+          catalogue.AddBus(std::move(query_.bus));
+        }
+      }
+    }
+
+    //добавляем расстояния в каталог для пар
+    void reader::CalcPairDistances(catalogue::transport_catalogue& catalogue) {
+      for (const auto& stop : catalogue.stops) {
+      std::string_view name_ = stop.name;
+      std::for_each(stop.distances.begin(),
+                stop.distances.end(),
+                [&catalogue, name_](const auto& pair_) {
+                    catalogue.distances.insert({{
+                            catalogue.stopname_to_stop[name_], catalogue.stopname_to_stop[pair_.first]}, 
+                            pair_.second});
+                    });
+      }
+    }
+
+    void reader::CalcRouteLen(catalogue::transport_catalogue& catalogue, const std::string_view& bus_name) {
+      double geo_len = 0.0;
+      double fact_len = 
+        std::transform_reduce(catalogue.busname_to_bus.at(bus_name)->stops.begin(),
+          catalogue.busname_to_bus.at(bus_name)->stops.end() - 1,
+          catalogue.busname_to_bus.at(bus_name)->stops.begin() + 1,
+          0.0,
+          std::plus<double>(),
+          [&geo_len, &catalogue] (const auto& lhs, const auto& rhs) {
+            geo_len += geo::ComputeDistance(lhs->coordinates, rhs->coordinates);
+
+            catalogue::Stop* lhs_stop = catalogue.stopname_to_stop.at(lhs->name);
+            catalogue::Stop* rhs_stop = catalogue.stopname_to_stop.at(rhs->name);
+            return catalogue.distances.find({lhs_stop, rhs_stop}) != catalogue.distances.end() ? 
+                            catalogue.distances.at({lhs_stop, rhs_stop}) : 
+                            catalogue.distances.at({rhs_stop, lhs_stop});
+      });
+
+      catalogue.bus_routes_geo.insert({catalogue.busname_to_bus.at(bus_name), geo_len});
+      catalogue.bus_routes_fact.insert({catalogue.busname_to_bus.at(bus_name), fact_len});
+    }
+
+    std::vector<catalogue::Query>& reader::GetRawOutQueries() {
+      return out_queries;
+    }
 }

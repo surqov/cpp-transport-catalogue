@@ -36,6 +36,8 @@ enum class QueryType {
 };
 
 struct Query {
+    int id = 0;
+    std::string_view name;
     QueryType type;
     Bus bus;
     Stop stop;
