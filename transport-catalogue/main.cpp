@@ -37,7 +37,7 @@ int main() {
         std::istream& in__ = static_cast<std::istream&>(in_);
         json::Document doc_ = json::Load(in__);
         json_reader::reader queries(doc_, catalogue);
-        stat::stat_reader<std::ostream&> output(queries.GetRawOutQueries(), catalogue, out_);
+        json_reader::JsonInfoPrint(queries.GetRawOutQueries(), catalogue, out_);
     }
     return 0;
 }

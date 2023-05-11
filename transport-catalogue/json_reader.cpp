@@ -52,17 +52,50 @@ namespace json_reader {
         return result;
     }
 
+    json::Document BusInfoToJson(const catalogue::BusInfo& bus_info_) {
+      json::Dict result;
+      result["curvature"s] = bus_info_.curvature;
+      result["route_length"s] = bus_info_.route_len;
+      result["stop_count"s] = bus_info_.stops_on_route;
+      result["unique_stop_count"s] = bus_info_.unique_stops;
+      return json::Document(json::Node(result));
+    }
+
+    json::Document StopInfoToJson(const catalogue::StopInfo& stop_info_) {
+      json::Dict result;
+      json::Array buses;
+      buses.reserve(stop_info_.buses_to_stop.size());
+      for (const std::string_view& bus_ : stop_info_.buses_to_stop) {
+        buses.push_back({std::string(bus_)});
+      }
+      return json::Document(json::Node(result));
+    }
+
+    void JsonInfoPrint(const std::vector<catalogue::Query>& out_queries, 
+                      const catalogue::transport_catalogue& catalogue,
+                      std::ostream& out) {
+      for (const catalogue::Query& query_ : out_queries) {
+        if (query_.type == catalogue::QueryType::NewBus) {
+          json::Document doc_ = BusInfoToJson(catalogue.GetBusInfo(query_.name));
+          json::Print(doc_, out);
+        } else {
+          json::Document doc_ = StopInfoToJson(catalogue.GetStopInfo(query_.name));
+          json::Print(doc_, out);
+        }
+      }
+    }
+
     reader::reader(json::Document& doc, catalogue::transport_catalogue& catalogue) {
-        std::vector<catalogue::Query> bus_req;
+        std::vector<json::Node> bus_req;
         in_queries.reserve(doc.GetRoot().AsMap().at("base_requests"s).AsArray().size());
         bus_req.reserve(doc.GetRoot().AsMap().at("base_requests"s).AsArray().size());
         out_queries.reserve(doc.GetRoot().AsMap().at("stat_requests"s).AsArray().size());
 
         for (const json::Node& req : doc.GetRoot().AsMap().at("base_requests"s).AsArray()) {
             if (GetQueryType(req) == catalogue::QueryType::NewStop) {
-                in_queries.emplace_back(ParseToQuery(req, catalogue.stopname_to_stop));
+                in_queries.push_back(req);
             } else {
-                bus_req.emplace_back(ParseToQuery(req, catalogue.stopname_to_stop));
+                bus_req.push_back(req);
             }
         }
 
@@ -81,17 +114,14 @@ namespace json_reader {
             }
             out_queries.push_back(std::move(out_query));
       }
-
-
-
     }
 
     void reader::FillCatalogue(catalogue::transport_catalogue& catalogue) {
-      for (catalogue::Query& query_ : in_queries) {
-        if (query_.type == catalogue::QueryType::NewStop) {
-          catalogue.AddStop(std::move(query_.stop));
+      for (json::Node& node_ : in_queries) {
+        if (GetQueryType(node_) == catalogue::QueryType::NewStop) {
+          catalogue.AddStop(JsonToStop(node_));
         } else {
-          catalogue.AddBus(std::move(query_.bus));
+          catalogue.AddBus(JsonToBus(node_, catalogue.stopname_to_stop));
         }
       }
     }

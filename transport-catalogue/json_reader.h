@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <string_view>
+#include <iostream>
 
 using namespace std::literals;
 
@@ -16,9 +17,14 @@ catalogue::Query ParseToQuery(const json::Node& node, const std::unordered_map<s
 catalogue::Bus JsonToBus(const json::Node& node, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map);
 catalogue::Stop JsonToStop(const json::Node& node);
 
+json::Document BusInfoToJson(const catalogue::BusInfo& bus_info_);
+json::Document StopInfoToJson(const catalogue::StopInfo& stop_info_);
+
+void JsonInfoPrint(const std::vector<catalogue::Query>& out_queries, const catalogue::transport_catalogue& catalogue, std::ostream& out);
+
 class reader {
     private:
-    std::vector<catalogue::Query> in_queries;
+    std::vector<json::Node> in_queries;
     std::vector<catalogue::Query> out_queries;
 
     public:
