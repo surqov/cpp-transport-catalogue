@@ -81,10 +81,15 @@ namespace json_reader {
       result.reserve(out_queries.size());
 
       for (const catalogue::Query& query_ : out_queries) {
-        if (query_.type == catalogue::QueryType::NewBus) {
-          node_ = BusInfoToJson(catalogue.GetBusInfo(query_.name));
-        } else {
-          node_ = StopInfoToJson(catalogue.GetStopInfo(query_.name));
+        try {
+          if (query_.type == catalogue::QueryType::NewBus) {
+            node_ = BusInfoToJson(catalogue.GetBusInfo(query_.name));
+          } else {
+            node_ = StopInfoToJson(catalogue.GetStopInfo(query_.name));
+          }
+        } catch (const std::out_of_range& e) {
+          node_ = {};
+          node_["error_message"] = e.what();
         }
         node_["request_id"] = query_.id;
         result.push_back(node_);
