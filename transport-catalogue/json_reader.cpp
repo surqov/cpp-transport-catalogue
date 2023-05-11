@@ -45,9 +45,9 @@ namespace json_reader {
                     [&result, &stops_map](const json::Node& node_){
                         result.stops.push_back(stops_map.at(node_.AsString()));
                     });
-
-        if (node.AsMap().at("is_roundtrip"s).AsBool()) 
-            result.stops.insert(result.stops.end(), result.stops.rbegin() + 1, result.stops.rend() - 2);
+        bool symmetry = !node.AsMap().at("is_roundtrip"s).AsBool();
+        if (symmetry) 
+          result.stops.insert(result.stops.end(), result.stops.rbegin() + 1, result.stops.rend());
         
         return result;
     }
