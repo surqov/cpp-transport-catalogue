@@ -52,37 +52,44 @@ namespace json_reader {
         return result;
     }
 
-    json::Document BusInfoToJson(const catalogue::BusInfo& bus_info_) {
+    json::Dict BusInfoToJson(const catalogue::BusInfo& bus_info_) {
       json::Dict result;
       result["curvature"s] = bus_info_.curvature;
       result["route_length"s] = bus_info_.route_len;
       result["stop_count"s] = bus_info_.stops_on_route;
       result["unique_stop_count"s] = bus_info_.unique_stops;
-      return json::Document(json::Node(result));
+      return result;
     }
 
-    json::Document StopInfoToJson(const catalogue::StopInfo& stop_info_) {
+    json::Dict StopInfoToJson(const catalogue::StopInfo& stop_info_) {
       json::Dict result;
       json::Array buses;
       buses.reserve(stop_info_.buses_to_stop.size());
       for (const std::string_view& bus_ : stop_info_.buses_to_stop) {
         buses.push_back({std::string(bus_)});
       }
-      return json::Document(json::Node(result));
+      result["buses"] = {std::move(buses)};
+      return result;
     }
 
     void JsonInfoPrint(const std::vector<catalogue::Query>& out_queries, 
                       const catalogue::transport_catalogue& catalogue,
                       std::ostream& out) {
+      json::Array result;
+      json::Dict node_;
+
+      result.reserve(out_queries.size());
+
       for (const catalogue::Query& query_ : out_queries) {
         if (query_.type == catalogue::QueryType::NewBus) {
-          json::Document doc_ = BusInfoToJson(catalogue.GetBusInfo(query_.name));
-          json::Print(doc_, out);
+          node_ = BusInfoToJson(catalogue.GetBusInfo(query_.name));
         } else {
-          json::Document doc_ = StopInfoToJson(catalogue.GetStopInfo(query_.name));
-          json::Print(doc_, out);
+          node_ = StopInfoToJson(catalogue.GetStopInfo(query_.name));
         }
+        node_["request_id"] = query_.id;
+        result.push_back(node_);
       }
+      json::Print(json::Document(result), out);
     }
 
     reader::reader(json::Document& doc, catalogue::transport_catalogue& catalogue) {

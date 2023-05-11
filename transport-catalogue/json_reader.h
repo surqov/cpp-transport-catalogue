@@ -17,8 +17,8 @@ catalogue::Query ParseToQuery(const json::Node& node, const std::unordered_map<s
 catalogue::Bus JsonToBus(const json::Node& node, const std::unordered_map<std::string_view, catalogue::Stop*>& stops_map);
 catalogue::Stop JsonToStop(const json::Node& node);
 
-json::Document BusInfoToJson(const catalogue::BusInfo& bus_info_);
-json::Document StopInfoToJson(const catalogue::StopInfo& stop_info_);
+json::Dict BusInfoToJson(const catalogue::BusInfo& bus_info_);
+json::Dict StopInfoToJson(const catalogue::StopInfo& stop_info_);
 
 void JsonInfoPrint(const std::vector<catalogue::Query>& out_queries, const catalogue::transport_catalogue& catalogue, std::ostream& out);
 
