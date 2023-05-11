@@ -48,7 +48,7 @@ namespace json_reader {
         bool symmetry = !node.AsMap().at("is_roundtrip"s).AsBool();
         if (symmetry) 
           result.stops.insert(result.stops.end(), result.stops.rbegin() + 1, result.stops.rend());
-        
+  
         return result;
     }
 
