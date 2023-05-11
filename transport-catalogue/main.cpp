@@ -29,7 +29,7 @@ int main() {
         //сделать конструктор для stat не по string а по reader
     }*/
 
-    {// читаем json
+    {// читаем json - выводим json
         std::fstream in_("input.json"s);
         std::ostream& out_(std::cout);
         catalogue::transport_catalogue catalogue;
@@ -39,5 +39,6 @@ int main() {
         json_reader::reader queries(doc_, catalogue);
         json_reader::JsonInfoPrint(queries.GetRawOutQueries(), catalogue, out_);
     }
+
     return 0;
 }

@@ -245,14 +245,13 @@ Document Load(istream& input) {
 }
 
 template<>
-void PrintValue<std::nullptr_t>(const std::nullptr_t&, std::ostream& out) {
-    out << "null"sv;
+void PrintValue<std::nullptr_t>(const std::nullptr_t&, const PrintContext& ctx) {
+    ctx.out << "null"sv;
 }
 
-template<>
-void PrintValue<std::string>(const std::string& s, std::ostream& out) {
-    out << '"';
-    for (const char c : s) {
+void PrintString(const std::string& value, std::ostream& out) {
+    out.put('"');
+    for (const char c : value) {
         switch (c) {
             case '\r':
                 out << "\\r"sv;
@@ -261,6 +260,7 @@ void PrintValue<std::string>(const std::string& s, std::ostream& out) {
                 out << "\\n"sv;
                 break;
             case '"':
+                // Символы " и \ выводятся как \" или \\, соответственно
                 [[fallthrough]];
             case '\\':
                 out.put('\\');
@@ -270,60 +270,71 @@ void PrintValue<std::string>(const std::string& s, std::ostream& out) {
                 break;
         }
     }
-    out << '"';
+    out.put('"');
+}
+
+template <>
+void PrintValue<std::string>(const std::string& value, const PrintContext& ctx) {
+    PrintString(value, ctx.out);
 }
 
 template<>
-void PrintValue<Array>(const Array& a, std::ostream& out) {
-    out << "[\n"sv;
+void PrintValue<Array>(const Array& a, const PrintContext& ctx) {
+    ctx.out << "[\n"sv;
     bool first = true;
+    auto inner_ctx = ctx.Indented();
     for (const Node& node : a) {
         if (first) {
             first = false;
         } else {
-            out << ",\n"sv;
+            ctx.out << ",\n"sv;
         }
-        PrintNode(node, out);
+        inner_ctx.PrintIndent();
+        PrintNode(node, inner_ctx);
     }
-    out << '\n';
-    out << ']';
+    ctx.out << '\n';
+    ctx.PrintIndent();
+    ctx.out << ']';
 }
 
 template<>
-void PrintValue<Dict>(const Dict& d, std::ostream& out) {
-    out << "{\n"sv;
+void PrintValue<Dict>(const Dict& d, const PrintContext& ctx) {
+    ctx.out << "{\n"sv;
     bool first = true;
+    auto inner_ctx = ctx.Indented();
     for (const auto& [key, node] : d) {
         if (first) {
             first = false;
         } else {
-            out << ",\n"sv;
+            ctx.out << ",\n"sv;
         }
-        PrintValue(key, out);
-        out << ": "sv;
-        PrintNode(node, out);
+        inner_ctx.PrintIndent();
+        PrintString(key, ctx.out);
+        ctx.out << ": "sv;
+        PrintNode(node, inner_ctx);
     }
-    out << '\n';
-    out << '}';
+    ctx.out << '\n';
+    ctx.PrintIndent();
+    ctx.out << '}';
 }
 
 template<>
-void PrintValue<bool>(const bool& b, std::ostream& out) {
-    out << std::boolalpha << b;
+void PrintValue<bool>(const bool& b, const PrintContext& ctx) {
+    ctx.out << std::boolalpha << b;
 }
 
 template<>
-void PrintValue<Node>(const Node& n, std::ostream& out) {
-    PrintNode(n, out);
+void PrintValue<Node>(const Node& n, const PrintContext& ctx) {
+    PrintNode(n, ctx);
 }
 
-void PrintNode(const Node &node, ostream &out) {
-    visit([&out](const auto &value) { PrintValue(value, out); },
+void PrintNode(const Node &node, const PrintContext& ctx) {
+    visit([&ctx](const auto &value) { PrintValue(value, ctx); },
           node.GetBase());
 }
 
-void Print(const json::Document &document, ostream &out) {
-    PrintNode(document.GetRoot(), out);
+void Print(const Document& doc, std::ostream& output) {
+    PrintNode(doc.GetRoot(), PrintContext{output});
 }
 
 }  // namespace json

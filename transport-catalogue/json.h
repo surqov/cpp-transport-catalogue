@@ -127,32 +127,49 @@ bool operator!=(const Document& left, const Document& right);
 
 Document Load(std::istream& input);
 
-void Print(const Document& doc, std::ostream& out);
+struct PrintContext {
+    std::ostream& out;
+    int indent_step = 4;
+    int indent = 0;
+
+    void PrintIndent() const {
+        for (int i = 0; i < indent; ++i) {
+            out.put(' ');
+        }
+    }
+
+    // Возвращает новый контекст вывода с увеличенным смещением
+    PrintContext Indented() const {
+        return {out, indent_step, indent_step + indent};
+    }
+};
 
 // Шаблон, подходящий для вывода double и in
 template <typename Value>
-void PrintValue(const Value& value, std::ostream& out) {
-    out << value;
+void PrintValue(const Value& value, const PrintContext& ctx) {
+    ctx.out << value;
 }
 
 template<>
-void PrintValue<std::nullptr_t>(const std::nullptr_t&, std::ostream& out);
+void PrintValue<std::nullptr_t>(const std::nullptr_t&, const PrintContext& ctx);
 
 template<>
-void PrintValue<bool>(const bool& b, std::ostream& out);
+void PrintValue<bool>(const bool& b, const PrintContext& ctx);
 
 template<>
-void PrintValue<std::string>(const std::string& s, std::ostream& out);
+void PrintValue<std::string>(const std::string& s, const PrintContext& ctx);
 
 template<>
-void PrintValue<Dict>(const Dict& d, std::ostream& out);
+void PrintValue<Dict>(const Dict& d, const PrintContext& ctx);
 
 template<>
-void PrintValue<Array>(const Array& a, std::ostream& out);
+void PrintValue<Array>(const Array& a, const PrintContext& ctx);
 
 template<>
-void PrintValue<Node>(const Node& n, std::ostream& out);
+void PrintValue<Node>(const Node& n, const PrintContext& ctx);
 
-void PrintNode(const Node& node, std::ostream& out);
+void PrintNode(const Node& node, const PrintContext& ctx);
+
+void Print(const Document& doc, std::ostream& out);
 
 }  // namespace json
