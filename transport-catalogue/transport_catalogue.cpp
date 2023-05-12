@@ -60,7 +60,7 @@ catalogue::BusInfo catalogue::transport_catalogue::GetBusInfo(const std::string_
         info_.curvature = fact_len / geo_len;
         info_.route_len = fact_len;
         }
-    else {
+    else if (!info_.found){
         throw std::out_of_range("not found"s);
     }
     return info_;
@@ -72,7 +72,7 @@ catalogue::StopInfo catalogue::transport_catalogue::GetStopInfo(const std::strin
     info_.found = stopname_to_stop.find(stop_name) != stopname_to_stop.end();
     if (info_.found && stopname_to_busesnames.find(stop_name) != stopname_to_busesnames.end()) {
         info_.buses_to_stop = stopname_to_busesnames.at(stop_name);
-    } else {
+    } else if (!info_.found) {
         throw std::out_of_range("not found"s);
     }
     return info_;
